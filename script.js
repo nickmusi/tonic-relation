@@ -59,6 +59,19 @@ var Settings = {
     time: 5,
     drone: true
 };
+var i11;
+var i12;
+var i13;
+var i21;
+var i22;
+var i23;
+var i31;
+var i32;
+var i33;
+var i41;
+var i42;
+var i43;
+
 //global variables
 
 //Initialize all audio
@@ -88,20 +101,8 @@ example.start(audioContext.currentTime);
 
 startMenu();
 function startMenu(){
-
+    document.getElementById("startMenu").hidden = false;
     var abort = new AbortController;
-    var i11 = false;
-    var i12 = false;
-    var i13 = false;
-    var i21 = false;
-    var i22 = false;
-    var i23 = false;
-    var i31 = false;
-    var i32 = false;
-    var i33 = false;
-    var i41 = false;
-    var i42 = false;
-    var i43 = false;
 
     document.getElementById("i11").addEventListener("click", () => {i11 = true; i12 = false; i13 = false; check();}, {signal: abort.signal});
     document.getElementById("i12").addEventListener("click", () => {i11 = false; i12 = true; i13 = false; check();}, {signal: abort.signal});
@@ -115,6 +116,7 @@ function startMenu(){
     document.getElementById("i42").addEventListener("click", () => {i41 = false; i42 = true; i43 = false; check();}, {signal: abort.signal});
     document.getElementById("i43").addEventListener("click", () => {i41 = false; i42 = false; i43 = true; check();}, {signal: abort.signal});
     document.getElementById("start").addEventListener("click", start, {signal: abort.signal});
+
     function start(){
         Settings.key = Number(document.getElementById("key").value);
         noteRecognition();
@@ -287,11 +289,6 @@ function noteRecognition(){
     }
     //inputs
 
-    function reset() {
-        document.getElementById("endMenu").hidden = true;
-        noteRecognition();
-        document.getElementById("retry").removeEventListener("click", reset);
-    }
     document.getElementById("body").className = "body";
     
     if (audioContext.state === "suspended"){
@@ -361,11 +358,11 @@ function noteRecognition(){
             document.getElementById("menuHighScore").innerHTML = Math.round(highScore);
             document.getElementById("endMenu").hidden = false;
             document.getElementById("body").className = "bodyOff";
+            startMenu();
             keyboard = -1;
             random = -1;
             //reset all previous things
             inputs.abort();
-            document.getElementById("retry").addEventListener("click", reset);
             again = true;
             clearInterval(intReturn);
             return;
