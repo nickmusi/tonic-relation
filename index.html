@@ -1,69 +1,69 @@
-<!DOCTYPE html style="height: 100%;">
-
-<head>
-    <link href="style.css" rel="stylesheet" />
+<!DOCTYPE html>
+<!-- saved from url=(0116)file:///C:/Users/jason/Documents/My%20Docs/OSU/Year%201.5/Intro%20to%20Music%20Ed/Contract/tonic-relation/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <link href="style.css" rel="stylesheet">
     <title>Ear Training Web App</title>
 </head>
-<body style = "height: 100%;">
-<div id=body class="bodyOff">
+<body style="height: 100%;">
+<div id="body" class="bodyOff">
     <div class="statTable">
-        <div class="statLabel">Score: </div><div class="stats" id ="score">0</div>
-        <div class="statLabel">Average Time: </div><div class="stats" id ="avgTime">0</div>
-        <div class="statLabel">Time: </div><div class="stats" id ="time">0</div>
-        Test
+        <div class="statLabel">Score: </div><div class="stats" id="score">0</div>
+        <div class="statLabel">Average Time: </div><div class="stats" id="avgTime">0</div>
+        <div class="statLabel">Time: </div><div class="stats" id="time">0</div>
      </div>
 
     <div class="keyboard">
-        <div style = "position: relative; left: 2.5vw;">
-            <button name="keyboard" class = "keys" id="54">F#/Gb</button>
-            <button name="keyboard" class = "keys" id="56">G#/Ab</button>
-            <button style="margin-right: 5.75vw;" name="keyboard" class = "keys" id="58">A#/Bb</button>
-            <button name="keyboard" class = "keys" id="61">C#/Db</button>
-            <button style="margin-right: 5.75vw;" name="keyboard" class = "keys" id="63">D#/Eb</button>
-            <button name="keyboard" class = "keys" id="66">F#/Gb</button>
-            <button name="keyboard" class = "keys" id="68">G#/Ab</button>
-            <button style="margin-right: 5.75vw;" name="keyboard" class = "keys" id="70">A#/Bb</button>
-            <button name="keyboard" class = "keys" id="73">C#/Db</button>
-            <button name="keyboard" class = "keys" id="75">D#/Eb</button>
+        <div style="position: relative; left: 2.5vw;">
+            <button name="keyboard" class="keys" id="54">F#/Gb</button>
+            <button name="keyboard" class="keys" id="56">G#/Ab</button>
+            <button style="margin-right: 5.75vw;" name="keyboard" class="keys" id="58">A#/Bb</button>
+            <button name="keyboard" class="keys" id="61">C#/Db</button>
+            <button style="margin-right: 5.75vw;" name="keyboard" class="keys" id="63">D#/Eb</button>
+            <button name="keyboard" class="keys" id="66">F#/Gb</button>
+            <button name="keyboard" class="keys" id="68">G#/Ab</button>
+            <button style="margin-right: 5.75vw;" name="keyboard" class="keys" id="70">A#/Bb</button>
+            <button name="keyboard" class="keys" id="73">C#/Db</button>
+            <button name="keyboard" class="keys" id="75">D#/Eb</button>
         </div>
         <div>
-        <button name="keyboard" class = "keys" id="53">F</button>
-        <button name="keyboard" class = "keys" id="55">G</button>
-        <button name="keyboard" class = "keys" id="57">A</button>
-        <button name="keyboard" class = "keys" id="59">B</button>
-        <button name="keyboard" class = "keys" id="60">C</button>
-        <button name="keyboard" class = "keys" id="62">D</button>
-        <button name="keyboard" class = "keys" id="64">E</button>
-        <button name="keyboard" class = "keys" id="65">F</button>
-        <button name="keyboard" class = "keys" id="67">G</button>
-        <button name="keyboard" class = "keys" id="69">A</button>
-        <button name="keyboard" class = "keys" id="71">B</button>
-        <button name="keyboard" class = "keys" id="72">C</button>
-        <button name="keyboard" class = "keys" id="74">D</button>
-        <button name="keyboard" class = "keys" id="76">E</button>
-        <button name="keyboard" class = "keys" id="77">F</button>
+        <button name="keyboard" class="keys" id="53">F</button>
+        <button name="keyboard" class="keys" id="55">G</button>
+        <button name="keyboard" class="keys" id="57">A</button>
+        <button name="keyboard" class="keys" id="59">B</button>
+        <button name="keyboard" class="keys" id="60">C</button>
+        <button name="keyboard" class="keys" id="62">D</button>
+        <button name="keyboard" class="keys" id="64">E</button>
+        <button name="keyboard" class="keys" id="65">F</button>
+        <button name="keyboard" class="keys" id="67">G</button>
+        <button name="keyboard" class="keys" id="69">A</button>
+        <button name="keyboard" class="keys" id="71">B</button>
+        <button name="keyboard" class="keys" id="72">C</button>
+        <button name="keyboard" class="keys" id="74">D</button>
+        <button name="keyboard" class="keys" id="76">E</button>
+        <button name="keyboard" class="keys" id="77">F</button>
         </div>
     </div>
 </div>
-<div hidden id="endMenu" class="endMenu"><div id="endMenuLabel">Game Over!</div>
-    <div class="statTable">
-        <div class="stats">Score: </div><div class="stats" id ="menuScore">0</div>
-        <div class="stats">High Score: </div><div class="stats" id ="menuHighScore">0</div>
-        <div class="stats">Average Time: </div><div class="stats" id ="menuAvgTime">0</div>
-     </div>
-     <button id="retry">Retry</button>
-</div>
 <div id="startMenu" class="startMenu">
-    <div>Skill</div>
-    <div>Game</div>
-    <div>Difficulty</div>
-    <div>Scale</div>
-    <div>Key</div>
-    <button title="Recognize notes in relation to a key!" class="modes" id="i11">Pitch</button>
-    <button title="Get as many notes right as you can before running out of lives!" class="modes" id="i21">Endurance</button>
-    <button title="3 Lives, A third of notes, and a drone!" class="modes" id="i31">Beginner</button>
-    <button title="" class="modes" id="i41">Major</button>
-    <select id="key" class="modes">
+    <div hidden="" style="grid-column: 1 / 6; grid-row: 1; display: inline-grid" id="endMenu">
+        <div style="grid-column: 1; grid-row: 1; font-size: larger; font-weight: bold;" id="endMenuLabel">Game Over!</div>
+        <div style="grid-column: 2; grid-row: 1;" class="stats">Score: </div>
+        <div style="grid-column: 2; grid-row: 2;" class="stats" id="menuScore">0</div>
+        <div style="grid-column: 3; grid-row: 1;" class="stats">High Score: </div>
+        <div style="grid-column: 3; grid-row: 2;" class="stats" id="menuHighScore">0</div>
+        <div style="grid-column: 4; grid-row: 1;" class="stats">Average Time: </div>
+        <div style="grid-column: 4; grid-row: 2;" class="stats" id="menuAvgTime">0</div>
+    </div>
+    <div style="grid-column: 1; grid-row: 2;">Skill</div>
+    <div style="grid-column: 2; grid-row: 2;">Game</div>
+    <div style="grid-column: 3; grid-row: 2;">Difficulty</div>
+    <div style="grid-column: 4; grid-row: 2;">Scale</div>
+    <div style="grid-column: 5; grid-row: 2;">Key</div>
+    <button style="grid-column: 1; grid-row: 3;" title="Recognize notes in relation to a key!" class="modes" id="i11">Pitch</button>
+    <button style="grid-column: 2; grid-row: 3;" title="Get as many notes right as you can before running out of lives!" class="modes" id="i21">Endurance</button>
+    <button style="grid-column: 3; grid-row: 3;" title="3 Lives, A third of notes, and a drone!" class="modes" id="i31">Beginner</button>
+    <button style="grid-column: 4; grid-row: 3;" title="" class="modes" id="i41">Major</button>
+    <select style="grid-column: 5; grid-row: 3;" id="key" class="modes">
         <option value="60">C</option>
         <option value="61">Db</option>
         <option value="62">D</option>
@@ -77,15 +77,16 @@
         <option value="58">Bb</option>
         <option value="59">B</option>
     </select>
-    <button title="Coming soon! Recognize and match EQ or filter settings applied to songs" class="modesDisabled" id="i12">Frequency</button>
-    <button title="Coming soon! Every question, the time limit shrinks!" class="modesDisabled" id="i22">Time Attack</button>
-    <button title="2 lives, A fifth of notes, and a drone!" class="modes" id="i32">Intermediate</button>
-    <button title="" class="modes" id="i42">Minor</button>
-    <button style="grid-column: 2; grid-row: 4;" title="Coming soon! Learn to recognize scale degrees!" class="modesDisabled" id="i23">Learn</button>
-    <button style="grid-column: 3; grid-row: 4;" title="1 Life, octave of notes, and no drone!" class="modes" id="i33">Advanced</button>
+    <button style="grid-column: 1; grid-row: 4;" title="Coming soon! Recognize and match EQ or filter settings applied to songs" class="modesDisabled" id="i12">Frequency</button>
+    <button style="grid-column: 2; grid-row: 4;" title="Coming soon! Every question, the time limit shrinks!" class="modesDisabled" id="i22">Time Attack</button>
+    <button style="grid-column: 3; grid-row: 4;" title="2 lives, A fifth of notes, and a drone!" class="modes" id="i32">Intermediate</button>
+    <button style="grid-column: 4; grid-row: 4;" class="modes" id="i42">Minor</button>
+    <button style="grid-column: 2; grid-row: 5;" title="Coming soon! Learn to recognize scale degrees!" class="modesDisabled" id="i23">Learn</button>
+    <button style="grid-column: 3; grid-row: 5;" title="1 Life, octave of notes, and no drone!" class="modes" id="i33">Advanced</button>
     
-    <button style="grid-column: 4; grid-row: 4;"title="" class="modes" id="i43">Chromatic</button>
-    <button id="start" class="start" style="grid-column: 5; grid-row: 5;">Start</button>
+    <button style="grid-column: 4; grid-row: 5;" title="" class="modes" id="i43">Chromatic</button>
+    <button id="start" class="start" style="grid-column: 5; grid-row: 6;">Start</button>
 </div>
 <script src="script.js"></script>
-</body>
+
+</body></html>

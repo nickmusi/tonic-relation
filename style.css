@@ -60,12 +60,6 @@
     font-weight: bolder;
 }
 
-.statTable {
-    display: grid;
-    grid-template-columns:max-content auto;
-    border-color: black;
-    
-}
 .statLabel {
     margin-left: auto;
     margin-right: 3px;
@@ -78,8 +72,8 @@
     font-weight: bolder;
 }
 .stats {
-    margin-left: 3px;
-    margin-right: auto;
+    margin-left: auto;
+    margin-right: 3px;
     color: rgb(0, 0, 0);
     border-color: black;
     border-radius: 3px;
@@ -89,15 +83,7 @@
     font-weight: bolder;
 }
 
-.endMenu {
-    background-color: rgb(213, 213, 213);
-    padding: 5vw;
-    position: fixed;
-    max-width: fit-content;
-    height: fit-content;
-    inset: 0;
-    margin: auto;
-}
+
 
 .bodyOff {
     filter: blur(3px);
@@ -144,10 +130,4 @@
     background-color: rgb(181, 181, 181);
     border: 2px;
     border-color:black;
-}
-.modesDisabled:hover{
-
-}
-.modesDisabled:active{
-
 }
