@@ -60,6 +60,18 @@
     font-weight: bolder;
 }
 
+.infoMenu{
+    text-align: center;
+    position: absolute;
+    background-color: rgb(213, 213, 213);
+    padding: 40px;
+    max-width: 300px;
+    height: fit-content;
+    margin: auto;
+    inset: 0;
+    z-index: 5;
+}
+
 .statLabel {
     margin-left: auto;
     margin-right: 3px;

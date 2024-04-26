@@ -72,6 +72,9 @@ var i41;
 var i42;
 var i43;
 
+document.getElementById("info").addEventListener("click", () => {document.getElementById("infoMenu").hidden = false;})
+document.getElementById("infoClose").addEventListener("click", () => {document.getElementById("infoMenu").hidden = true;})
+    
 //global variables
 
 //Initialize all audio
