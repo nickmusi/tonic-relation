@@ -19,6 +19,21 @@ const advanced = {
     time: 4,
     drone: false
 }
+
+var Settings = {
+    advanced: {
+        minTime: 0.9,//sets the minimum time for time attack
+        timeRate: 0.95,// 0 < timeRate < 1; sets how fast the time requirement will shrink
+    },
+    key: 60,
+    range: [7, 12],
+    scale: major,
+    lives: 3,
+    time: 5,
+    drone: true,
+    game: "endurance"
+};
+
 var qwertyMap = [];
 qwertyMap[53] = "KeyZ";
 qwertyMap[54] = "KeyS";
@@ -50,15 +65,6 @@ var keyboard = -1;
 var highScore = 0;
 var again = false;
 
-
-var Settings = {
-    key: 60,
-    range: [7, 12],
-    scale: major,
-    lives: 3,
-    time: 5,
-    drone: true
-};
 var i11;
 var i12;
 var i13;
@@ -122,7 +128,7 @@ function startMenu(){
 
     function start(){
         Settings.key = Number(document.getElementById("key").value);
-        noteRecognition();
+        pitch();
         document.getElementById("startMenu").hidden = true;
         abort.abort();
     }
@@ -148,17 +154,19 @@ function startMenu(){
         }//1st column--------------------------------*/
         if (i21){//2nd colum---------------
             document.getElementById("i21").className = "modesActive";
+            Settings.game = "endurance";
         }
         else{
             document.getElementById("i21").className = "modes"; 
         }
-        /*if (i22){
+        if (i22){
             document.getElementById("i22").className = "modesActive";
+            Settings.game = "time attack";
         }
         else{
             document.getElementById("i22").className = "modes"; 
         }
-        if (i23){
+        /*if (i23){
             document.getElementById("i23").className = "modesActive";
         }
         else{
@@ -253,7 +261,7 @@ function exampleOff(){
 
 
 
-function noteRecognition(){
+function pitch(){
     var inputs = new AbortController;
     //inputs
     document.getElementById("53").addEventListener("click", () => {keyboard = 53; check();}, {signal: inputs.signal});
@@ -285,8 +293,11 @@ function noteRecognition(){
     document.addEventListener("keydown", keycheck, {signal: inputs.signal});//#
     function keycheck(key){
         keyboard = qwertyMap.findIndex((element) => (element == key.code));
-        var keyString = String(keyboard);
-        document.getElementById(keyString).className = "keysActive";
+        if (keyboard != -1){
+            var keyString = String(keyboard);
+            document.getElementById(keyString).className = "keysActive";
+        }
+        
         setTimeout(() => {document.getElementById(keyString).className = "keys";}, 500);
         check();
     }
@@ -312,6 +323,7 @@ function noteRecognition(){
     var averageTime;
     var score;
     var num;
+    var degradeCount = 0;
     lives = Settings.lives;
     time = audioContext.currentTime + 1;
     averageTime = 0;
@@ -320,7 +332,13 @@ function noteRecognition(){
     var intReturn;
 
     var x = Settings.time;
-    setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1}, 100);}, 1000);
+    if (Settings.game == "time attack") {
+        setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1; if (x <= 0) {attackEnd();};}, 100);}, 1000);
+    }
+    else {
+        setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1;}, 100);}, 1000);
+    }
+    
   
     document.getElementById("score").innerHTML = Math.round(score);
 
@@ -334,15 +352,23 @@ function noteRecognition(){
             document.getElementById("avgTime").innerHTML = (averageTime.toFixed(2));
             num += 1;
             time = audioContext.currentTime + .01;
-            setTimeout(() => {x = Settings.time}, 100);
+            if (Settings.game == "endurance"){
+                setTimeout(() => {x = Settings.time}, 100);
+            }
+            if (Settings.game == "time attack"){
+                setTimeout(() => {x = ((Settings.time - Settings.advanced.minTime) * (Settings.advanced.timeRate) ** (degradeCount)) + Settings.advanced.minTime}, 100);
+                degradeCount += 1;
+            }
             exampleOn(random, 0.1);
         }
         else{if (keyboard != -1){
-            var keystring;
-            keystring = String(keyboard);
+            if (keyboard > -1){
+                var keystring;
+                keystring = String(keyboard);
+                document.getElementById(keystring).className = "wrong";
+                setTimeout(() => {document.getElementById(keystring).className = "keys";}, 800);
+            }
             lives += -1;
-            document.getElementById(keystring).className = "wrong";
-            setTimeout(() => {document.getElementById(keystring).className = "keys";}, 800);
         }
         }
         if (lives == 0){
@@ -367,10 +393,16 @@ function noteRecognition(){
             //reset all previous things
             inputs.abort();
             again = true;
+            degradeCount = 0;
             clearInterval(intReturn);
             return;
         }
         
+    }
+    function attackEnd() { //sets the keyboard to wrong, then immediately checks if wrong to make timing out cost a life
+        keyboard = -2;
+        check();
+        clearInterval(intReturn);
     }
 }
 
