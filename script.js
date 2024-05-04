@@ -7,25 +7,41 @@ const beginner = {
     range: [2, 4],
     lives: 3,
     time: 8,
-    drone: true
+    drone: true,
+    advanced: {
+        showOptions: true,
+        minTime: 0.9,//sets the minimum time for time attack
+        timeRate: 0.955,// 0 < timeRate < 1; sets how fast the time requirement will shrink
+    }
 }
 const intermediate = {
     range: [4, 7],
     lives: 2,
     time: 6,
-    drone: true
+    drone: true,
+    advanced: {
+        showOptions: true,
+        minTime: 0.9,//sets the minimum time for time attack
+        timeRate: 0.955,// 0 < timeRate < 1; sets how fast the time requirement will shrink
+    }
 }
 const advanced = {
     range: [7, 12],
     lives: 1,
     time: 4,
-    drone: false
+    drone: false,
+    advanced: {
+        showOptions: false,
+        minTime: 0.88,//sets the minimum time for time attack
+        timeRate: 0.955,// 0 < timeRate < 1; sets how fast the time requirement will shrink
+    }
 }
 
 var Settings = {
     advanced: {
         minTime: 0.9,//sets the minimum time for time attack
         timeRate: 0.95,// 0 < timeRate < 1; sets how fast the time requirement will shrink
+        showOptions: true,//Decides wheter to show what possible notes will be picked
     },
     key: 60,
     range: [7, 12],
@@ -176,7 +192,7 @@ function startMenu(){
         }//2nd colum---------------*/
         if (i31){//3rd colum---------------
             document.getElementById("i31").className = "modesActive";
-            Settings = Object.assign(Settings, beginner)
+            Settings = Object.assign(Settings, beginner);
         }
         else{
             document.getElementById("i31").className = "modes"; 
@@ -317,6 +333,13 @@ function pitch(){
     random = randomNote(Settings.key);
     droneOn(Settings.key);
     document.getElementById(String(Settings.key)).className = "keysDrone";
+    if (Settings.advanced.showOptions){
+        for (i = 1; i <= Settings.range[0]; i++){//apply styling to the possible key options
+            document.getElementById(String(Settings.scale[i - (Settings.scale.length * Math.floor(i/Settings.scale.length))] + (12 * Math.floor(i/Settings.scale.length)) + Settings.key)).className = "keysOptions";
+        }
+    }
+    
+
     if (!Settings.drone){
         setTimeout(droneOff, 1000);
     }
@@ -377,6 +400,7 @@ function pitch(){
         }
         }
         if (lives == 0){
+            inputs.abort();
             droneOff();
             document.getElementById(String(Settings.key)).className = "keys";
             exampleOff();
@@ -392,14 +416,19 @@ function pitch(){
             document.getElementById("menuHighScore").innerHTML = Math.round(highScore);
             document.getElementById("endMenu").hidden = false;
             document.getElementById("body").className = "bodyOff";
+            if (Settings.advanced.showOptions){
+                for (i = 1; i <= Settings.range[0]; i++){//apply styling to the possible key options
+                    document.getElementById(String(Settings.scale[i - (Settings.scale.length * Math.floor(i/Settings.scale.length))] + (12 * Math.floor(i/Settings.scale.length)) + Settings.key)).className = "keys";
+                }
+            }
             startMenu();
             keyboard = -1;
             random = -1;
             //reset all previous things
-            inputs.abort();
             again = true;
             degradeCount = 0;
             clearInterval(intReturn);
+            exampleOff();
             return;
         }
         

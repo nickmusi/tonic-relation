@@ -28,6 +28,13 @@
     background-color: rgb(28, 103, 254);
     border-color: black;
 }
+.keysOptions {
+    width:5vw;
+    height: 25vh;
+    margin: 0.25vw; 
+    background-color: rgb(159, 228, 224);
+    border-color: black;
+}
 .keysActive {
     width:5vw;
     height: 25vh;
@@ -42,6 +49,7 @@
     background-color: rgb(138, 210, 134);
     border-color: black;
 }
+
 .wrong {
     width:5vw;
     height: 25vh;
