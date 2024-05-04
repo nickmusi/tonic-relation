@@ -219,7 +219,7 @@ function startMenu(){
     }
 }
 
-function randomNote(){
+function randomNote(exception = -1){
     var position
     
     var note;
@@ -231,7 +231,11 @@ function randomNote(){
         position = Math.round(Settings.range[1] * Math.random());
         note = position + Settings.key;
     }
+    if ((note == exception) || (note == undefined)) {
+        note = randomNote(exception);
+    }
     return note;
+    
 }
 
 function mtof(x){
@@ -310,7 +314,7 @@ function pitch(){
         audioContext.resume();
     }
     var random;
-    random = randomNote();
+    random = randomNote(Settings.key);
     droneOn(Settings.key);
     document.getElementById(String(Settings.key)).className = "keysDrone";
     if (!Settings.drone){
@@ -347,7 +351,7 @@ function pitch(){
         if (random == keyboard){
             score = score + Math.max(Settings.time - (audioContext.currentTime - time), 0);
             averageTime = ((averageTime * num) + (audioContext.currentTime - time)) / (num + 1);
-            random = randomNote();
+            random = randomNote(random);
             keyboard = -1;
             document.getElementById("score").innerHTML = Math.round(score);
             document.getElementById("avgTime").innerHTML = (averageTime.toFixed(2));
@@ -411,8 +415,7 @@ function startAudio(){
     if (audioContext.state === "suspended"){
         audioContext.resume();
     }
-    var note = randomNote();
-    
+
     exampleGain.gain.setValueAtTime(0.25, audioContext.currentTime);
     
     example.frequency.setValueAtTime(mtof(note), audioContext.currentTime);
