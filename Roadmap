@@ -1,0 +1,28 @@
+Next Steps
+    Fix mobile formatting
+    Update stats styling
+    Dark mode
+    DONE! Disable same note twice in a row and tonic note as first example
+    Frequency recognition
+    Improve performance
+        1 event listener, then check type instead of multiple?
+    Clean up code and add comments
+    Piano soundfont
+    MIDI integration
+    DONE! Show note options
+        (calculate from range and scale, then convert to keystring)
+    Move Roadmap file to issues (each line separate issue)
+    Have reset for active key options just reset every key, not check
+
+
+Future features
+    Whole learning process from start to finish
+    Track progress over time
+    Research and data analysis on use in different groups (Nonmusicians, musicians without ear training, musicians after sight singing I, etc); show graph of progress over time
+    Add server-side functionality
+
+
+Known issues
+    Resolved! (Should be)New note sustains if you get example correct right as time runs out
+    Getting a note wrong causes it to be styled as an out-of-key note
+    Info icon only works when menu isn't open
