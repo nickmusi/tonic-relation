@@ -334,8 +334,15 @@ function pitch(){
     droneOn(Settings.key);
     document.getElementById(String(Settings.key)).className = "keysDrone";
     if (Settings.advanced.showOptions){
-        for (i = 1; i <= Settings.range[0]; i++){//apply styling to the possible key options
-            document.getElementById(String(Settings.scale[i - (Settings.scale.length * Math.floor(i/Settings.scale.length))] + (12 * Math.floor(i/Settings.scale.length)) + Settings.key)).className = "keysOptions";
+        if (Settings.scale != "chromatic"){
+            for (i = 1; i <= Settings.range[0]; i++){//apply styling to the possible key options
+                document.getElementById(String(Settings.scale[i - (Settings.scale.length * Math.floor(i/Settings.scale.length))] + (12 * Math.floor(i/Settings.scale.length)) + Settings.key)).className = "keysOptions";
+            }
+        }
+        else{
+            for (i = 1; i <= Settings.range[1]; i++){//apply styling to the possible key options
+                document.getElementById(String(i + Settings.key)).className = "keysOptions";
+            }
         }
     }
     
@@ -417,8 +424,15 @@ function pitch(){
             document.getElementById("endMenu").hidden = false;
             document.getElementById("body").className = "bodyOff";
             if (Settings.advanced.showOptions){
-                for (i = 1; i <= Settings.range[0]; i++){//apply styling to the possible key options
-                    document.getElementById(String(Settings.scale[i - (Settings.scale.length * Math.floor(i/Settings.scale.length))] + (12 * Math.floor(i/Settings.scale.length)) + Settings.key)).className = "keys";
+                if (Settings.scale != "chromatic"){
+                    for (i = 1; i <= Settings.range[0]; i++){//apply styling to the possible key options
+                        document.getElementById(String(Settings.scale[i - (Settings.scale.length * Math.floor(i/Settings.scale.length))] + (12 * Math.floor(i/Settings.scale.length)) + Settings.key)).className = "keys";
+                    }
+                }
+                else{
+                    for (i = 1; i <= Settings.range[1]; i++){//apply styling to the possible key options
+                        document.getElementById(String(i + Settings.key)).className = "keys";
+                    }
                 }
             }
             startMenu();
