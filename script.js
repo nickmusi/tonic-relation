@@ -130,7 +130,7 @@ startMenu();
 function startMenu(){
     document.getElementById("startMenu").hidden = false;
     var abort = new AbortController;
-
+    exampleOff();
     document.getElementById("i11").addEventListener("click", () => {i11 = true; i12 = false; i13 = false; check();}, {signal: abort.signal});
     document.getElementById("i12").addEventListener("click", () => {i11 = false; i12 = true; i13 = false; check();}, {signal: abort.signal});
     document.getElementById("i21").addEventListener("click", () => {i21 = true; i22 = false; i23 = false; check();}, {signal: abort.signal});
