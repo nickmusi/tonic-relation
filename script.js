@@ -1,4 +1,6 @@
 //global variables
+screen.orientation.lock('landscape');
+
 var major = [0, 2, 4, 5, 7, 9, 11];
 var minor = [0, 2, 3, 5, 7, 8, 10];
 const beginner = {
@@ -296,9 +298,8 @@ function pitch(){
         if (keyboard != -1){
             var keyString = String(keyboard);
             document.getElementById(keyString).className = "keysActive";
+            setTimeout(() => {document.getElementById(keyString).className = "keys";}, 500);
         }
-        
-        setTimeout(() => {document.getElementById(keyString).className = "keys";}, 500);
         check();
     }
     //inputs
