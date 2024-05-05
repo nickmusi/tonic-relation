@@ -1,4 +1,3 @@
-@media screen and (width > 430px){
 [hidden] {
     display: none !important 
 }
@@ -7,7 +6,7 @@
     width: fit-content;
     height: fit-content;
     margin-inline: auto;
-    margin-top:19vh;
+    margin-top: 0px;
     margin-bottom: 0vh;
 }
 
@@ -18,7 +17,7 @@
 
 .keys {
     width:5vw;
-    height: 25vh;
+    height: 22vh;
     margin: 0.25vw;   
 }
 .keys:hover {
@@ -29,22 +28,22 @@
     border-color: black;
 }
 .keysOptions {
-    width:5vw;
-    height: 25vh;
-    margin: 0.25vw; 
-    background-color: rgb(159, 228, 224);
+    width: 5vw;
+    height: 22vh;
+    margin: 0.25vw;
+    background-color: #9dcaff;
     border-color: black;
 }
 .keysActive {
     width:5vw;
-    height: 25vh;
+    height: 22vh;
     margin: 0.25vw; 
     background-color: rgb(28, 103, 254);
     border-color: black;
 }
 .keysDrone {
     width:5vw;
-    height: 25vh;
+    height: 22vh;
     margin: 0.25vw; 
     background-color: rgb(138, 210, 134);
     border-color: black;
@@ -52,7 +51,7 @@
 
 .wrong {
     width:5vw;
-    height: 25vh;
+    height: 22vh;
     margin: 0.25vw; 
     border-color: black;
     background-color: rgb(219, 40, 40);
@@ -81,27 +80,29 @@
     inset: 0;
     z-index: 5;
 }
-
+.statTable {
+    display: grid;
+    grid-template-columns: 33vw 33vw 33vw;
+    height: 50vh;
+    background-color: #9dcaff;
+}
 .statLabel {
-    margin-left: auto;
-    margin-right: 3px;
+    margin: auto;
     color: rgb(0, 0, 0);
     border-color: black;
     border-radius: 3px;
     border: 5px;
-    font-style: bold;
-    font-size: 4vh;
+    font-size: 190%;
     font-weight: bolder;
 }
 .stats {
-    margin-left: auto;
-    margin-right: 3px;
+    margin: auto;
     color: rgb(0, 0, 0);
     border-color: black;
     border-radius: 3px;
     border: 5px;
     font-style: bold;
-    font-size: 4vh;
+    font-size: 190%;
     font-weight: bolder;
 }
 
@@ -152,5 +153,4 @@
     background-color: rgb(181, 181, 181);
     border: 2px;
     border-color:black;
-}
 }
