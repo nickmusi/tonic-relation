@@ -3,7 +3,9 @@
 }
 
 .keyboard {
+    overflow: auto;
     width: fit-content;
+    white-space: nowrap;
     height: fit-content;
     margin-inline: auto;
     margin-top: 0px;
@@ -16,9 +18,10 @@
 }
 
 .keys {
-    width:5vw;
+    width: 5vw;
     height: 22vh;
-    margin: 0.25vw;   
+    min-width: 48px;
+    margin: 0.25vw;
 }
 .keys:hover {
     background-color: rgb(182, 196, 255);
@@ -30,6 +33,7 @@
 .keysOptions {
     width: 5vw;
     height: 22vh;
+    min-width: 48px;
     margin: 0.25vw;
     background-color: #9dcaff;
     border-color: black;
@@ -37,6 +41,7 @@
 .keysActive {
     width:5vw;
     height: 22vh;
+    min-width: 48px;
     margin: 0.25vw; 
     background-color: rgb(28, 103, 254);
     border-color: black;
@@ -44,6 +49,7 @@
 .keysDrone {
     width:5vw;
     height: 22vh;
+    min-width: 48px;
     margin: 0.25vw; 
     background-color: rgb(138, 210, 134);
     border-color: black;
@@ -52,6 +58,7 @@
 .wrong {
     width:5vw;
     height: 22vh;
+    min-width: 48px;
     margin: 0.25vw; 
     border-color: black;
     background-color: rgb(219, 40, 40);

@@ -13,6 +13,7 @@ Next Steps
         (calculate from range and scale, then convert to keystring)
     Move Roadmap file to issues (each line separate issue)
     Have reset for active key options just reset every key, not check
+    Make menu toggle buttons behave in groups and have labels for accessibility
 
 
 Future features
