@@ -59,15 +59,14 @@
     background-color: rgb(219, 40, 40);
 }
 
-.start{
-    height: 45px;
-    width: 90px;
+.start {
+    height: min(7.5vw, 45px);
+    width: min(15vw, 90px);
     border-color: black;
     margin: 5px;
     background-color: rgb(28, 103, 254);
     color: rgb(255, 255, 255);
-    font-style: bold;
-    font-size: x-large;
+    font-size: min(5vw, 30px);
     font-weight: bolder;
 }
 
@@ -87,6 +86,7 @@
     grid-template-columns: 33vw 33vw 33vw;
     height: 50vh;
     background-color: #9dcaff;
+    text-align: center;
 }
 .statLabel {
     margin: auto;
@@ -103,12 +103,14 @@
     border-color: black;
     border-radius: 3px;
     border: 5px;
-    font-style: bold;
-    font-size: 190%;
+    font-size: min(2.9vw, 23px);
     font-weight: bolder;
+    text-align: center;
 }
 
-
+.menuLabel {
+    font-size: min(3vw, 17px);
+}
 
 .bodyOff {
     filter: blur(3px);
@@ -127,10 +129,11 @@
 }
 
 .modes {
-    width: 90px;
-    height: 90px;
-    margin-inline: 6px;
-    margin-block: 3px;
+    width: min(15vw, 90px);
+    height: min(15vw, 90px);
+    margin-inline: 1vw;
+    margin-block: 1vw;
+    font-size: min(2vw, 14px);
     text-align: center;
     background-color: #f0f0f0;
     border-color: black;
@@ -141,17 +144,21 @@
     border-width: 2px;
 }
 .modesActive {
-    width: 90px;
-    height: 90px;
-    margin-inline: 6px;
-    margin-block: 3px;
+    width: min(15vw, 90px);
+    height: min(15vw, 90px);
+    margin-inline: 1vw;
+    margin-block: 1vw;
+    font-size: min(2vw, 14px);
+    text-align: center;
     background-color: rgb(108 180 255);
 }
 .modesDisabled{
-    width: 90px;
-    height: 90px;
-    margin-inline: 6px;
-    margin-block: 3px;
+    width: min(15vw, 90px);
+    height: min(15vw, 90px);
+    margin-inline: 1vw;
+    margin-block: 1vw;
+    font-size: min(2vw, 14px);
+    text-align: center;
     background-color: rgb(181, 181, 181);
     border: 2px;
     border-color:black;

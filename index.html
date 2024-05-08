@@ -58,21 +58,19 @@
     </div>
 </div>
 <div id="startMenu" class="startMenu">
-    <div hidden="" style="
-        grid-column: 1 / 6; grid-template-columns: 25% 25% 25% 25%; grid-row: 1; display: inline-grid;" id="endMenu">
-        <div style="grid-column: 1; grid-row: 1; font-size: 190%; font-weight: bold;" id="endMenuLabel">Game Over!</div>
-        <div style="grid-column: 2; grid-row: 1;" class="stats">Score: </div>
+    <div hidden="" style=" grid-column: 1 / 6; grid-template-columns: 25% 25% 25% 25%; grid-row: 1; display: inline-grid;" id="endMenu">
+        <div style="grid-column: 1;grid-row: 1; font-size: min(2.9vw, 23px); font-weight: bold;" id="endMenuLabel">Game Over!</div>        <div style="grid-column: 2; grid-row: 1;" class="stats">Score: </div>
         <div style="grid-column: 2; grid-row: 2;" class="stats" id="menuScore">0</div>
         <div style="grid-column: 3; grid-row: 1;" class="stats">High Score: </div>
         <div style="grid-column: 3; grid-row: 2;" class="stats" id="menuHighScore">0</div>
         <div style="grid-column: 4; grid-row: 1;" class="stats">Average Time: </div>
         <div style="grid-column: 4; grid-row: 2;" class="stats" id="menuAvgTime">0</div>
     </div>
-    <div style="grid-column: 1; grid-row: 2;">Skill</div>
-    <div style="grid-column: 2; grid-row: 2;">Game</div>
-    <div style="grid-column: 3; grid-row: 2;">Difficulty</div>
-    <div style="grid-column: 4; grid-row: 2;">Scale</div>
-    <label for="key" style="grid-column: 5; grid-row: 2;">Key</label>
+    <div class="menuLabel" style="grid-column: 1; grid-row: 2;">Skill</div>
+    <div class="menuLabel" style="grid-column: 2; grid-row: 2;">Game</div>
+    <div class="menuLabel" style="grid-column: 3; grid-row: 2;">Difficulty</div>
+    <div class="menuLabel" style="grid-column: 4; grid-row: 2;">Scale</div>
+    <label class="menuLabel" for="key" style="grid-column: 5; grid-row: 2;">Key</label>
     <button style="grid-column: 1; grid-row: 3;" title="Recognize notes in relation to a key!" class="modes" id="i11">Pitch</button>
     <button style="grid-column: 2; grid-row: 3;" title="Get as many notes right as you can before running out of lives!" class="modes" id="i21">Endurance</button>
     <button style="grid-column: 3; grid-row: 3;" title="3 Lives, A third of notes, and a drone!" class="modes" id="i31">Beginner</button>
