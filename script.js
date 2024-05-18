@@ -1,6 +1,4 @@
 //global variables
-screen.orientation.lock('landscape');
-
 var major = [0, 2, 4, 5, 7, 9, 11];
 var minor = [0, 2, 3, 5, 7, 8, 10];
 const beginner = {
@@ -128,7 +126,10 @@ example.start(audioContext.currentTime);
 
 startMenu();
 function startMenu(){
+    var pitchMode = true;
+    var freqMode = false;
     document.getElementById("startMenu").hidden = false;
+    document.getElementById("body").className = "bodyOff";
     var abort = new AbortController;
     exampleOff();
     document.getElementById("i11").addEventListener("click", () => {i11 = true; i12 = false; i13 = false; check();}, {signal: abort.signal});
@@ -146,24 +147,36 @@ function startMenu(){
 
     function start(){
         Settings.key = Number(document.getElementById("key").value);
-        pitch();
+        if (pitchMode){pitch();}
+        if (freqMode){frequency();}
+        
         document.getElementById("startMenu").hidden = true;
+        document.getElementById("body").className = "body";
         abort.abort();
     }
     function check(){
  
         if (i11){//1st column--------------------------------
             document.getElementById("i11").className = "modesActive";
+            document.getElementById("keyboard").hidden = false;
+            pitchMode = true;
         }
         else{
             document.getElementById("i11").className = "modes"; 
+            document.getElementById("keyboard").hidden = true;
+            pitchMode = false;
         }
-        /*if (i12){
+        if (i12){
             document.getElementById("i12").className = "modesActive";
+            document.getElementById("freq").hidden = false;
+            freqMode = true;
+
         }
         else{
             document.getElementById("i12").className = "modes"; 
-        }*/
+            document.getElementById("freq").hidden = true;
+            freqMode = false;
+        }
         /*if (i13){
             document.getElementById("i13").className = "modesActive";
         }
@@ -323,8 +336,6 @@ function pitch(){
         check();
     }
     //inputs
-
-    document.getElementById("body").className = "body";
     
     if (audioContext.state === "suspended"){
         audioContext.resume();
@@ -422,7 +433,6 @@ function pitch(){
             document.getElementById("menuAvgTime").innerHTML = (averageTime.toFixed(2));
             document.getElementById("menuHighScore").innerHTML = Math.round(highScore);
             document.getElementById("endMenu").hidden = false;
-            document.getElementById("body").className = "bodyOff";
             if (Settings.advanced.showOptions){
                 if (Settings.scale != "chromatic"){
                     for (i = 1; i <= Settings.range[0]; i++){//apply styling to the possible key options
@@ -466,6 +476,33 @@ function startAudio(){
     exampleFlt.frequency.setValueAtTime(mtof(note) * filter, audioContext.currentTime);
     
     example.start(audioContext.currentTime + 1.5);
+}
+
+function frequency(){
+    if (audioContext.state === "suspended"){
+        audioContext.resume();
+    }
+
+    //inputs--------------------------------------------------------
+    var inputs = new AbortController;
+    var match
+
+    document.getElementById("hear").addEventListener("click", () => {match = false; check();}, {signal: inputs.signal});
+    document.getElementById("match").addEventListener("click", () => {match = true; check();}, {signal: inputs.signal});
+
+    function check(){
+        if (match){
+            document.getElementById("match").className = "modesActive";
+            document.getElementById("hear").className = "modes";
+        }
+        else{
+            document.getElementById("hear").className = "modesActive";
+            document.getElementById("match").className = "modes";
+        }
+    }
+
+    //inputs--------------------------------------------------------
+
 }
 
 /* to do: descriptions of difficulty levels, list difficulty in endmenu,

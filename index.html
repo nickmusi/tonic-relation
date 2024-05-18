@@ -25,7 +25,7 @@
         <div class="stats" id="avgTime">0</div>
         <div class="stats" id="time">0</div>
      </div>
-    <div class="keyboard">
+    <div id="keyboard" class="keyboard">
         <div style="position: relative; left: 2.5vw;">
             <button name="keyboard" class="keys" id="54">F#/Gb</button>
             <button name="keyboard" class="keys" id="56">G#/Ab</button>
@@ -55,6 +55,12 @@
         <button name="keyboard" class="keys" id="76">E</button>
         <button name="keyboard" class="keys" id="77">F</button>
         </div>
+    </div>
+    <div id ="freq" class="freq">
+        <button id="hear" class="modes">Hear Example</button>
+        <button id="match" class="modes">Match example</button>
+        <label for="cutoff">Cutoff freqency</label>
+        <input id="cutoff" type="range">
     </div>
 </div>
 <div id="startMenu" class="startMenu">
@@ -89,7 +95,7 @@
         <option value="58">Bb</option>
         <option value="59">B</option>
     </select>
-    <button style="grid-column: 1; grid-row: 4;" title="Coming soon! Recognize and match EQ or filter settings applied to songs" class="modesDisabled" id="i12">Frequency</button>
+    <button style="grid-column: 1; grid-row: 4;" title="Coming soon! Recognize and match EQ or filter settings applied to songs" class="modes" id="i12">Frequency</button>
     <button style="grid-column: 2; grid-row: 4;" title="Coming soon! Every question, the time limit shrinks!" class="modes" id="i22">Time Attack</button>
     <button style="grid-column: 3; grid-row: 4;" title="2 lives, A fifth of notes, and a drone!" class="modes" id="i32">Intermediate</button>
     <button style="grid-column: 4; grid-row: 4;" class="modes" id="i42">Minor</button>
