@@ -83,7 +83,7 @@
 }
 .statTable {
     display: grid;
-    grid-template-columns: 33vw 33vw 33vw;
+    grid-template-columns: 25vw 25vw 25vw 25vw;
     height: 50vh;
     background-color: #9dcaff;
     text-align: center;
@@ -94,7 +94,7 @@
     border-color: black;
     border-radius: 3px;
     border: 5px;
-    font-size: 190%;
+    font-size: min(4.5vw, 32px);
     font-weight: bolder;
 }
 .stats {
@@ -162,4 +162,11 @@
     background-color: rgb(181, 181, 181);
     border: 2px;
     border-color:black;
+}
+.cutoff{
+    width: 97vw;
+}
+.checkmarks{
+    width: 11vh;
+    padding: 1.5vh;
 }

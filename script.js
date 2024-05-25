@@ -4,7 +4,7 @@ var minor = [0, 2, 3, 5, 7, 8, 10];
 const beginner = {
     range: [2, 4],
     lives: 3,
-    time: 8,
+    time: [8, 60],
     drone: true,
     advanced: {
         showOptions: true,
@@ -15,7 +15,7 @@ const beginner = {
 const intermediate = {
     range: [4, 7],
     lives: 2,
-    time: 6,
+    time: [6, 25],
     drone: true,
     advanced: {
         showOptions: true,
@@ -26,7 +26,7 @@ const intermediate = {
 const advanced = {
     range: [7, 12],
     lives: 1,
-    time: 4,
+    time: [4, 15],
     drone: false,
     advanced: {
         showOptions: false,
@@ -45,8 +45,9 @@ var Settings = {
     range: [7, 12],
     scale: major,
     lives: 3,
-    time: 5,
+    time: [5, 20],//sets the amount of time given to answer a question. [0] is pitch, [1] is frequency
     drone: true,
+    skill: "pitch",
     game: "endurance"
 };
 
@@ -79,7 +80,6 @@ qwertyMap[77] = "KeyI";
 
 var keyboard = -1;
 var highScore = 0;
-var again = false;
 
 var i11;
 var i12;
@@ -107,6 +107,10 @@ const droneGain = new GainNode(audioContext);
 const example = new OscillatorNode(audioContext);
 const exampleFlt = new BiquadFilterNode(audioContext);
 const exampleGain = new GainNode(audioContext);
+const htmlSource = document.getElementById("source1");
+const source = new MediaElementAudioSourceNode(audioContext, {mediaElement: htmlSource});
+const hearAndMatchFlt = new BiquadFilterNode(audioContext);
+const hearAndMatchGain = new GainNode(audioContext);
 
 drone.type = "square";
 example.type = "sawtooth";
@@ -122,14 +126,16 @@ exampleFlt.connect(exampleGain);
 exampleGain.connect(audioContext.destination);
 drone.start(audioContext.currentTime);
 example.start(audioContext.currentTime);
+source.connect(hearAndMatchGain);
+hearAndMatchGain.connect(hearAndMatchFlt);
+hearAndMatchFlt.connect(audioContext.destination);
 //Initialize all audio
 
 startMenu();
 function startMenu(){
-    var pitchMode = true;
-    var freqMode = false;
     document.getElementById("startMenu").hidden = false;
     document.getElementById("body").className = "bodyOff";
+    document.getElementById("cutoff").value = 20000;
     var abort = new AbortController;
     exampleOff();
     document.getElementById("i11").addEventListener("click", () => {i11 = true; i12 = false; i13 = false; check();}, {signal: abort.signal});
@@ -147,8 +153,8 @@ function startMenu(){
 
     function start(){
         Settings.key = Number(document.getElementById("key").value);
-        if (pitchMode){pitch();}
-        if (freqMode){frequency();}
+        if (Settings.skill == "pitch"){pitch();}
+        if (Settings.skill == "freqency"){frequency();}
         
         document.getElementById("startMenu").hidden = true;
         document.getElementById("body").className = "body";
@@ -159,23 +165,21 @@ function startMenu(){
         if (i11){//1st column--------------------------------
             document.getElementById("i11").className = "modesActive";
             document.getElementById("keyboard").hidden = false;
-            pitchMode = true;
+            Settings.skill = "pitch";
         }
         else{
             document.getElementById("i11").className = "modes"; 
             document.getElementById("keyboard").hidden = true;
-            pitchMode = false;
         }
         if (i12){
             document.getElementById("i12").className = "modesActive";
             document.getElementById("freq").hidden = false;
-            freqMode = true;
+            Settings.skill = "freqency";
 
         }
         else{
             document.getElementById("i12").className = "modes"; 
             document.getElementById("freq").hidden = true;
-            freqMode = false;
         }
         /*if (i13){
             document.getElementById("i13").className = "modesActive";
@@ -267,10 +271,16 @@ function randomNote(exception = -1){
     
 }
 
+function randomFreq(min = 40, max = 15000){
+    return mtof(((ftom(max) - ftom(min)) * Math.random()) + ftom(min))
+}
+
 function mtof(x){
     return 440 * 2**((x-69)/12) //convert note to frequency
 }
-
+function ftom(x){
+    return ((12 * (Math.log(x) - Math.log(440))) / Math.log(2)) + 69;
+}
 
 
 function droneOn(note, time = 0){
@@ -325,7 +335,7 @@ function pitch(){
     document.getElementById("76").addEventListener("click", () => {keyboard = 76; check();}, {signal: inputs.signal});
     document.getElementById("77").addEventListener("click", () => {keyboard = 77; check();}, {signal: inputs.signal});
 
-    document.addEventListener("keydown", keycheck, {signal: inputs.signal});//#
+    document.addEventListener("keydown", keycheck, {signal: inputs.signal});
     function keycheck(key){
         keyboard = qwertyMap.findIndex((element) => (element == key.code));
         if (keyboard != -1){
@@ -367,8 +377,10 @@ function pitch(){
     var lives;
     var time;
     var averageTime;
+    var avgAccuracy = 0;
     var score;
     var num;
+    var allNum = 0;
     var degradeCount = 0;
     lives = Settings.lives;
     time = audioContext.currentTime + 1;
@@ -377,7 +389,7 @@ function pitch(){
     num = 0;
     var intReturn;
 
-    var x = Settings.time;
+    var x = Settings.time[0];
     if (Settings.game == "time attack") {
         setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1; if (x <= 0) {attackEnd();};}, 100);}, 1000);
     }
@@ -390,19 +402,22 @@ function pitch(){
 
     function check(){
         if (random == keyboard){
-            score = score + Math.max(Settings.time - (audioContext.currentTime - time), 0);
+            score = score + Math.max(Settings.time[0] - (audioContext.currentTime - time), 0);
             averageTime = ((averageTime * num) + (audioContext.currentTime - time)) / (num + 1);
+            avgAccuracy = ((avgAccuracy * allNum) + 1) / (allNum + 1);
             random = randomNote(random);
             keyboard = -1;
             document.getElementById("score").innerHTML = Math.round(score);
             document.getElementById("avgTime").innerHTML = (averageTime.toFixed(2));
+            document.getElementById("avgAccuracy").innerHTML = (avgAccuracy.toFixed(2));
             num += 1;
+            allNum += 1;
             time = audioContext.currentTime + .01;
             if (Settings.game == "endurance"){
-                setTimeout(() => {x = Settings.time}, 100);
+                setTimeout(() => {x = Settings.time[0]}, 100);
             }
             if (Settings.game == "time attack"){
-                setTimeout(() => {x = ((Settings.time - Settings.advanced.minTime) * (Settings.advanced.timeRate) ** (degradeCount)) + Settings.advanced.minTime}, 100);
+                setTimeout(() => {x = ((Settings.time[0] - Settings.advanced.minTime) * (Settings.advanced.timeRate) ** (degradeCount)) + Settings.advanced.minTime}, 100);
                 degradeCount += 1;
             }
             exampleOn(random, 0.1);
@@ -415,6 +430,9 @@ function pitch(){
                 setTimeout(() => {document.getElementById(keystring).className = "keys";}, 800);
             }
             lives += -1;
+            avgAccuracy = ((avgAccuracy * allNum) + 0) / (allNum + 1);
+            document.getElementById("avgAccuracy").innerHTML = (avgAccuracy.toFixed(2));
+            allNum += 1;
         }
         }
         if (lives == 0){
@@ -432,6 +450,7 @@ function pitch(){
             document.getElementById("menuScore").innerHTML = Math.round(score);
             document.getElementById("menuAvgTime").innerHTML = (averageTime.toFixed(2));
             document.getElementById("menuHighScore").innerHTML = Math.round(highScore);
+            document.getElementById("menuAvgAccuracy").innerHTML = (avgAccuracy.toFixed(2));
             document.getElementById("endMenu").hidden = false;
             if (Settings.advanced.showOptions){
                 if (Settings.scale != "chromatic"){
@@ -449,8 +468,6 @@ function pitch(){
             keyboard = -1;
             random = -1;
             //reset all previous things
-            again = true;
-            degradeCount = 0;
             clearInterval(intReturn);
             exampleOff();
             return;
@@ -460,7 +477,8 @@ function pitch(){
     function attackEnd() { //sets the keyboard to wrong, then immediately checks if wrong to make timing out cost a life
         keyboard = -2;
         check();
-        clearInterval(intReturn);
+        x = Settings.time[0];
+        degradeCount = 0;
     }
 }
 
@@ -482,33 +500,123 @@ function frequency(){
     if (audioContext.state === "suspended"){
         audioContext.resume();
     }
-
+    htmlSource.setAttribute("src", "resources/HoliznaCC0 - Classic.mp3")//can choose audio file location
+    hearAndMatchGain.gain.setValueAtTime(0.5, audioContext.currentTime);
+    htmlSource.loop = true;
     //inputs--------------------------------------------------------
     var inputs = new AbortController;
-    var match
+    var match;
+    var matchValue = 20000;
+    var hearValue = 20000;
+    var avgAccuracy = 0;
+    var accuracy;
+    var lives;
+    var time;
+    var averageTime = 0;
+    var score = 0;
+    degradeCount = 0;
+    document.getElementById("cutoff").value = 20000;
 
     document.getElementById("hear").addEventListener("click", () => {match = false; check();}, {signal: inputs.signal});
     document.getElementById("match").addEventListener("click", () => {match = true; check();}, {signal: inputs.signal});
-
+    document.getElementById("cutoff").addEventListener("input", () => {matchValue = mtof(document.getElementById("cutoff").value); document.getElementById("freqLabel").innerHTML = "Cutoff Freqency: " + String(Math.min(Math.round(matchValue), 20000)); check();}, {signal: inputs.signal});
+    document.getElementById("submit").addEventListener("click", submit, {signal: inputs.signal});
+    document.getElementById("hear").click();
     function check(){
         if (match){
             document.getElementById("match").className = "modesActive";
             document.getElementById("hear").className = "modes";
+            hearAndMatchFlt.frequency.setValueAtTime(matchValue, audioContext.currentTime);
         }
         else{
             document.getElementById("hear").className = "modesActive";
             document.getElementById("match").className = "modes";
+            hearAndMatchFlt.frequency.setValueAtTime(hearValue, audioContext.currentTime);
+        }   
+    }
+    //inputs--------------------------------------------------------
+
+    lives = Settings.lives;
+    time = audioContext.currentTime;
+    averageTime = 0;
+    score = 0;
+    var num = 0;
+    var allNum = 0;
+    var intReturn;
+
+    var x = Settings.time[1];
+    if (Settings.game == "time attack") {
+        setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1; if (x <= 0) {attackEnd();};}, 100);}, 1000);
+    }
+    else {
+        setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1;}, 100);}, 1000);
+    }
+
+    htmlSource.play()
+    hearValue = randomFreq();
+    hearAndMatchFlt.frequency.setValueAtTime(hearValue, audioContext.currentTime);
+    function submit(){
+        accuracy = (1 - Math.abs((ftom(matchValue) - ftom(hearValue)) / ftom(hearValue)))
+        if (accuracy >= 0.8){
+            score = score + accuracy * ((Math.max(Settings.time[1] - (audioContext.currentTime - time), 0)) + 10);
+            averageTime = ((averageTime * num) + (audioContext.currentTime - time)) / (num + 1);
+            avgAccuracy = Math.max(((avgAccuracy * allNum) + accuracy) / (allNum + 1), 0);
+            document.getElementById("score").innerHTML = Math.round(score);
+            document.getElementById("avgTime").innerHTML = (averageTime.toFixed(2));
+            document.getElementById("avgAccuracy").innerHTML = (avgAccuracy.toFixed(2));
+            document.getElementById("correct").hidden = false;
+            document.getElementById("incorrect").hidden = true;
+            document.getElementById("accuracy").innerHTML = String(Math.round(accuracy * 100)) + "%"
+            setTimeout(() => {document.getElementById("correct").hidden = true;}, 1000)
+            num += 1;
+            allNum += 1;
+            time = audioContext.currentTime;
+            if (Settings.game == "endurance"){
+                x = Settings.time[1];
+            }
+            if (Settings.game == "time attack"){
+                x = ((Settings.time[1] - Settings.advanced.minTime) * (Settings.advanced.timeRate) ** (degradeCount)) + Settings.advanced.minTime
+                degradeCount += 1;
+            }
+            hearValue = randomFreq();
+            document.getElementById("hear").click();
+        }
+        else {
+            lives += -1;
+            avgAccuracy = Math.max(((avgAccuracy * allNum) + accuracy) / (allNum + 1), 0);
+            document.getElementById("avgAccuracy").innerHTML = (avgAccuracy.toFixed(2));
+            allNum += 1;
+            document.getElementById("incorrect").hidden = false;
+            document.getElementById("correct").hidden = true;
+            setTimeout(() => {document.getElementById("incorrect").hidden = true;}, 1000)
+        }
+        if (lives == 0){
+            inputs.abort();
+            htmlSource.pause();
+            if (highScore < score) {
+                document.getElementById("endMenuLabel").innerHTML = "New High Score!"
+                highScore = score;
+            }
+            else {
+                document.getElementById("endMenuLabel").innerHTML = "Game Over!"
+            }
+            document.getElementById("menuScore").innerHTML = Math.round(score);
+            document.getElementById("menuAvgTime").innerHTML = (averageTime.toFixed(2));
+            document.getElementById("menuHighScore").innerHTML = Math.round(highScore);
+            document.getElementById("menuAvgAccuracy").innerHTML = (avgAccuracy.toFixed(2));
+            document.getElementById("endMenu").hidden = false;
+            startMenu();
+            //reset all previous things
+            clearInterval(intReturn);
+            return; 
         }
     }
 
-    //inputs--------------------------------------------------------
+    function attackEnd(){
+        matchValue = 8.176;//either this or set to current value and just force submit
+        submit();
+        x = Settings.time[1];
+        degradeCount = 0;
+    }
 
 }
-
-/* to do: descriptions of difficulty levels, list difficulty in endmenu,
-have endmenu be able to go back to main menu. Custom difficulty settings
-
-
-
-
-*/

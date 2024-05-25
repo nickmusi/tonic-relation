@@ -21,9 +21,11 @@
         <div class="statLabel">Score: </div>
         <div class="statLabel">Average Time: </div>
         <div class="statLabel">Time: </div>
+        <div class="statLabel">Average Accuracy: </div>
         <div class="stats" id="score">0</div>
         <div class="stats" id="avgTime">0</div>
         <div class="stats" id="time">0</div>
+        <div class="stats" id="avgAccuracy">0</div>
      </div>
     <div id="keyboard" class="keyboard">
         <div style="position: relative; left: 2.5vw;">
@@ -56,21 +58,36 @@
         <button name="keyboard" class="keys" id="77">F</button>
         </div>
     </div>
-    <div id ="freq" class="freq">
-        <button id="hear" class="modes">Hear Example</button>
-        <button id="match" class="modes">Match example</button>
-        <label for="cutoff">Cutoff freqency</label>
-        <input id="cutoff" type="range">
+    <div hidden="true" id ="freq" class="freq">
+        <div style="height: 14.5vh; width: fit-content; margin: auto;">
+            <div id="correct" hidden="true">
+                <img src="resources/correct.svg" class="checkmarks">
+                <div style="position: relative;top: -2vh; font-size: x-large; left: 5vh; color: #0b2d15;" id="accuracy"></div>
+            </div>
+            <img id="incorrect" src="resources/incorrect.svg" class="checkmarks" hidden="true">
+        </div>
+        <div style="width:fit-content; margin: auto;">
+            <button id="hear" class="modesActive">Hear Example</button>
+            <button id="match" class="modes">Match example</button>
+        </div>
+        <label style="font-size: larger; font-weight: bold;" for="cutoff" id="freqLabel">Cutoff Freqency: </label>
+        <input class="cutoff" id="cutoff" type="range" min="0" max="136" step="0.01">
+        <audio style="width: 97vw" id="source1" controls src=""></audio>
+        <div style="width:fit-content; margin-left: auto;">
+            <button style="width: min(21vw, 124px)" id="submit" class="start">Submit</button>
+        </div>
     </div>
 </div>
 <div id="startMenu" class="startMenu">
-    <div hidden="" style=" grid-column: 1 / 6; grid-template-columns: 25% 25% 25% 25%; grid-row: 1; display: inline-grid;" id="endMenu">
+    <div hidden="" style=" grid-column: 1 / 6; grid-template-columns: 20% 20% 20% 20% 20%; grid-row: 1; display: inline-grid;" id="endMenu">
         <div style="grid-column: 1;grid-row: 1; font-size: min(2.9vw, 23px); font-weight: bold;" id="endMenuLabel">Game Over!</div>        <div style="grid-column: 2; grid-row: 1;" class="stats">Score: </div>
         <div style="grid-column: 2; grid-row: 2;" class="stats" id="menuScore">0</div>
         <div style="grid-column: 3; grid-row: 1;" class="stats">High Score: </div>
         <div style="grid-column: 3; grid-row: 2;" class="stats" id="menuHighScore">0</div>
         <div style="grid-column: 4; grid-row: 1;" class="stats">Average Time: </div>
         <div style="grid-column: 4; grid-row: 2;" class="stats" id="menuAvgTime">0</div>
+        <div class="stats">Average Accuracy: </div>
+        <div style="grid-column: 5; grid-row: 2;" class="stats" id="menuAvgAccuracy">0</div>
     </div>
     <div class="menuLabel" style="grid-column: 1; grid-row: 2;">Skill</div>
     <div class="menuLabel" style="grid-column: 2; grid-row: 2;">Game</div>
@@ -95,8 +112,8 @@
         <option value="58">Bb</option>
         <option value="59">B</option>
     </select>
-    <button style="grid-column: 1; grid-row: 4;" title="Coming soon! Recognize and match EQ or filter settings applied to songs" class="modes" id="i12">Frequency</button>
-    <button style="grid-column: 2; grid-row: 4;" title="Coming soon! Every question, the time limit shrinks!" class="modes" id="i22">Time Attack</button>
+    <button style="grid-column: 1; grid-row: 4;" title="Recognize and match EQ or filter settings applied to songs!" class="modes" id="i12">Frequency</button>
+    <button style="grid-column: 2; grid-row: 4;" title="Every question, the time limit shrinks!" class="modes" id="i22">Time Attack</button>
     <button style="grid-column: 3; grid-row: 4;" title="2 lives, A fifth of notes, and a drone!" class="modes" id="i32">Intermediate</button>
     <button style="grid-column: 4; grid-row: 4;" class="modes" id="i42">Minor</button>
     <button style="grid-column: 2; grid-row: 5;" title="Coming soon! Learn to recognize scale degrees!" class="modesDisabled" id="i23">Learn</button>
