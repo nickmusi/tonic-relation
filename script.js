@@ -154,7 +154,7 @@ function startMenu(){
     function start(){
         Settings.key = Number(document.getElementById("key").value);
         if (Settings.skill == "pitch"){pitch();}
-        if (Settings.skill == "freqency"){frequency();}
+        if (Settings.skill == "frequency"){frequency();}
         
         document.getElementById("startMenu").hidden = true;
         document.getElementById("body").className = "body";
@@ -174,7 +174,7 @@ function startMenu(){
         if (i12){
             document.getElementById("i12").className = "modesActive";
             document.getElementById("freq").hidden = false;
-            Settings.skill = "freqency";
+            Settings.skill = "frequency";
 
         }
         else{
@@ -519,7 +519,7 @@ function frequency(){
 
     document.getElementById("hear").addEventListener("click", () => {match = false; check();}, {signal: inputs.signal});
     document.getElementById("match").addEventListener("click", () => {match = true; check();}, {signal: inputs.signal});
-    document.getElementById("cutoff").addEventListener("input", () => {matchValue = mtof(document.getElementById("cutoff").value); document.getElementById("freqLabel").innerHTML = "Cutoff Freqency: " + String(Math.min(Math.round(matchValue), 20000)); check();}, {signal: inputs.signal});
+    document.getElementById("cutoff").addEventListener("input", () => {matchValue = mtof(document.getElementById("cutoff").value); document.getElementById("freqLabel").innerHTML = "Cutoff Frequency: " + String(Math.min(Math.round(matchValue), 20000)); check();}, {signal: inputs.signal});
     document.getElementById("submit").addEventListener("click", submit, {signal: inputs.signal});
     document.getElementById("hear").click();
     function check(){
@@ -588,6 +588,7 @@ function frequency(){
             allNum += 1;
             document.getElementById("incorrect").hidden = false;
             document.getElementById("correct").hidden = true;
+            document.getElementById("accuracy2").innerHTML = String(Math.round(accuracy * 100)) + "%"
             setTimeout(() => {document.getElementById("incorrect").hidden = true;}, 1000)
         }
         if (lives == 0){

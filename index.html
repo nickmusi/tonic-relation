@@ -62,17 +62,20 @@
         <div style="height: 14.5vh; width: fit-content; margin: auto;">
             <div id="correct" hidden="true">
                 <img src="resources/correct.svg" class="checkmarks">
-                <div style="position: relative;top: -2vh; font-size: x-large; left: 5vh; color: #0b2d15;" id="accuracy"></div>
+                <div style="position: relative; top: -2vh; font-size: x-large; left: 0vw; text-align: center; color: #0b2d15;" id="accuracy"></div>
             </div>
-            <img id="incorrect" src="resources/incorrect.svg" class="checkmarks" hidden="true">
+            <div id="incorrect" hidden="true">
+                <img src="resources/incorrect.svg" class="checkmarks">
+                <div style="position: relative; top: -2vh; font-size: x-large; left: 0vw; text-align: center; color: #981c1c;" id="accuracy2"></div>
+            </div>
         </div>
         <div style="width:fit-content; margin: auto;">
             <button id="hear" class="modesActive">Hear Example</button>
             <button id="match" class="modes">Match example</button>
         </div>
-        <label style="font-size: larger; font-weight: bold;" for="cutoff" id="freqLabel">Cutoff Freqency: </label>
+        <label style="font-size: larger; font-weight: bold;" for="cutoff" id="freqLabel">Cutoff Frequency: </label>
         <input class="cutoff" id="cutoff" type="range" min="0" max="136" step="0.01">
-        <audio style="width: 97vw" id="source1" controls src=""></audio>
+        <audio style="width: 97vw" id="source1" src=""></audio>
         <div style="width:fit-content; margin-left: auto;">
             <button style="width: min(21vw, 124px)" id="submit" class="start">Submit</button>
         </div>

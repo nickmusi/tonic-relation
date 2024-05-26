@@ -129,11 +129,11 @@
 }
 
 .modes {
-    width: min(15vw, 90px);
-    height: min(15vw, 90px);
+    width: min(15vw, 110px);
+    height: min(15vw, 110px);
     margin-inline: 1vw;
     margin-block: 1vw;
-    font-size: min(2vw, 14px);
+    font-size: min(2vw, 17px);
     text-align: center;
     background-color: #f0f0f0;
     border-color: black;
@@ -144,20 +144,20 @@
     border-width: 2px;
 }
 .modesActive {
-    width: min(15vw, 90px);
-    height: min(15vw, 90px);
+    width: min(15vw, 110px);
+    height: min(15vw, 110px);
     margin-inline: 1vw;
     margin-block: 1vw;
-    font-size: min(2vw, 14px);
+    font-size: min(2vw, 17px);
     text-align: center;
     background-color: rgb(108 180 255);
 }
 .modesDisabled{
-    width: min(15vw, 90px);
-    height: min(15vw, 90px);
+    width: min(15vw, 110px);
+    height: min(15vw, 110px);
     margin-inline: 1vw;
     margin-block: 1vw;
-    font-size: min(2vw, 14px);
+    font-size: min(2vw, 17px);
     text-align: center;
     background-color: rgb(181, 181, 181);
     border: 2px;
