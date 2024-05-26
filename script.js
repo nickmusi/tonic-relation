@@ -6,6 +6,7 @@ const beginner = {
     lives: 3,
     time: [8, 60],
     drone: true,
+    freqThreshold: 0.7,
     advanced: {
         showOptions: true,
         minTime: 0.9,//sets the minimum time for time attack
@@ -17,6 +18,7 @@ const intermediate = {
     lives: 2,
     time: [6, 25],
     drone: true,
+    freqThreshold: 0.8,
     advanced: {
         showOptions: true,
         minTime: 0.9,//sets the minimum time for time attack
@@ -28,6 +30,7 @@ const advanced = {
     lives: 1,
     time: [4, 15],
     drone: false,
+    freqThreshold: 0.85,
     advanced: {
         showOptions: false,
         minTime: 0.88,//sets the minimum time for time attack
@@ -48,7 +51,8 @@ var Settings = {
     time: [5, 20],//sets the amount of time given to answer a question. [0] is pitch, [1] is frequency
     drone: true,
     skill: "pitch",
-    game: "endurance"
+    game: "endurance",
+    freqThreshold: 0.8//What cutoff frequency accuracy the Frequency skill will consider correct
 };
 
 var qwertyMap = [];
@@ -519,7 +523,7 @@ function frequency(){
 
     document.getElementById("hear").addEventListener("click", () => {match = false; check();}, {signal: inputs.signal});
     document.getElementById("match").addEventListener("click", () => {match = true; check();}, {signal: inputs.signal});
-    document.getElementById("cutoff").addEventListener("input", () => {matchValue = mtof(document.getElementById("cutoff").value); document.getElementById("freqLabel").innerHTML = "Cutoff Frequency: " + String(Math.min(Math.round(matchValue), 20000)); check();}, {signal: inputs.signal});
+    document.getElementById("cutoff").addEventListener("input", () => {matchValue = mtof(document.getElementById("cutoff").value); document.getElementById("freqLabel").innerHTML = "Cutoff Frequency: " + String(Math.min(Math.round(matchValue), 20000))  + " Hz"; check();}, {signal: inputs.signal});
     document.getElementById("submit").addEventListener("click", submit, {signal: inputs.signal});
     document.getElementById("hear").click();
     function check(){
@@ -557,7 +561,7 @@ function frequency(){
     hearAndMatchFlt.frequency.setValueAtTime(hearValue, audioContext.currentTime);
     function submit(){
         accuracy = (1 - Math.abs((ftom(matchValue) - ftom(hearValue)) / ftom(hearValue)))
-        if (accuracy >= 0.8){
+        if (accuracy >= Settings.freqThreshold){
             score = score + accuracy * ((Math.max(Settings.time[1] - (audioContext.currentTime - time), 0)) + 10);
             averageTime = ((averageTime * num) + (audioContext.currentTime - time)) / (num + 1);
             avgAccuracy = Math.max(((avgAccuracy * allNum) + accuracy) / (allNum + 1), 0);
