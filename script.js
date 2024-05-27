@@ -100,7 +100,7 @@ var i43;
 
 document.getElementById("info").addEventListener("click", () => {document.getElementById("infoMenu").hidden = false;})
 document.getElementById("infoClose").addEventListener("click", () => {document.getElementById("infoMenu").hidden = true;})
-    
+   
 //global variables
 
 //Initialize all audio
@@ -349,6 +349,24 @@ function pitch(){
         }
         check();
     }
+
+    //midi
+    var midiObject;
+    if (navigator.requestMIDIAccess){
+        navigator.requestMIDIAccess()
+            .then(midiCreate, () => {console.log("Failed to initialize MIDI!")});
+    }
+    function midiCreate(midi){
+        midiObject = midi;
+        midiObject.inputs.forEach((entry) => {entry.addEventListener("midimessage", onMIDIMessage, {signal: inputs.signal});});
+    }
+    function onMIDIMessage(event){
+        if (event.data[0] == 144){//if message is a noteonmessage
+            keyboard = event.data[1];
+            check();
+        }
+    }
+    //midi
     //inputs
     
     if (audioContext.state === "suspended"){
