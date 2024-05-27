@@ -84,17 +84,18 @@ qwertyMap[77] = "KeyI";
 
 var keyboard = -1;
 var highScore = 0;
+var keyOn = [];
 
-var i11;
+var i11 = true;
 var i12;
 var i13;
-var i21;
+var i21 = true;
 var i22;
 var i23;
 var i31;
-var i32;
+var i32 = true;
 var i33;
-var i41;
+var i41 = true;
 var i42;
 var i43;
 
@@ -140,6 +141,7 @@ function startMenu(){
     document.getElementById("startMenu").hidden = false;
     document.getElementById("body").className = "bodyOff";
     document.getElementById("cutoff").value = 20000;
+    check();
     var abort = new AbortController;
     exampleOff();
     document.getElementById("i11").addEventListener("click", () => {i11 = true; i12 = false; i13 = false; check();}, {signal: abort.signal});
@@ -380,11 +382,13 @@ function pitch(){
         if (Settings.scale != "chromatic"){
             for (i = 1; i <= Settings.range[0]; i++){//apply styling to the possible key options
                 document.getElementById(String(Settings.scale[i - (Settings.scale.length * Math.floor(i/Settings.scale.length))] + (12 * Math.floor(i/Settings.scale.length)) + Settings.key)).className = "keysOptions";
+                keyOn[Settings.scale[i - (Settings.scale.length * Math.floor(i/Settings.scale.length))] + (12 * Math.floor(i/Settings.scale.length)) + Settings.key] = true;
             }
         }
         else{
             for (i = 1; i <= Settings.range[1]; i++){//apply styling to the possible key options
                 document.getElementById(String(i + Settings.key)).className = "keysOptions";
+                keyOn[i + Settings.key] = true;
             }
         }
     }
@@ -449,7 +453,12 @@ function pitch(){
                 var keystring;
                 keystring = String(keyboard);
                 document.getElementById(keystring).className = "wrong";
-                setTimeout(() => {document.getElementById(keystring).className = "keys";}, 800);
+                if (keyOn[keyboard]){
+                    setTimeout(() => {document.getElementById(keystring).className = "keysOptions";}, 800);
+                }
+                else{
+                    setTimeout(() => {document.getElementById(keystring).className = "keys";}, 800);
+                }
             }
             lives += -1;
             avgAccuracy = ((avgAccuracy * allNum) + 0) / (allNum + 1);
@@ -475,16 +484,20 @@ function pitch(){
             document.getElementById("menuAvgAccuracy").innerHTML = (avgAccuracy.toFixed(2));
             document.getElementById("endMenu").hidden = false;
             if (Settings.advanced.showOptions){
-                if (Settings.scale != "chromatic"){
-                    for (i = 1; i <= Settings.range[0]; i++){//apply styling to the possible key options
-                        document.getElementById(String(Settings.scale[i - (Settings.scale.length * Math.floor(i/Settings.scale.length))] + (12 * Math.floor(i/Settings.scale.length)) + Settings.key)).className = "keys";
+                setTimeout(() => {
+                    if (Settings.scale != "chromatic"){
+                        for (i = 1; i <= Settings.range[0]; i++){//apply styling to the possible key options
+                            document.getElementById(String(Settings.scale[i - (Settings.scale.length * Math.floor(i/Settings.scale.length))] + (12 * Math.floor(i/Settings.scale.length)) + Settings.key)).className = "keys";
+                            keyOn[Settings.scale[i - (Settings.scale.length * Math.floor(i/Settings.scale.length))] + (12 * Math.floor(i/Settings.scale.length)) + Settings.key] = false;
+                        }
                     }
-                }
-                else{
-                    for (i = 1; i <= Settings.range[1]; i++){//apply styling to the possible key options
-                        document.getElementById(String(i + Settings.key)).className = "keys";
-                    }
-                }
+                    else{
+                        for (i = 1; i <= Settings.range[1]; i++){//apply styling to the possible key options
+                            document.getElementById(String(i + Settings.key)).className = "keys";
+                            keyOn[i + Settings.key] = false;
+                        }
+                    } 
+                }, 801)
             }
             startMenu();
             keyboard = -1;
