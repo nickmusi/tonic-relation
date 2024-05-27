@@ -438,7 +438,7 @@ function pitch(){
             document.getElementById("avgAccuracy").innerHTML = (avgAccuracy.toFixed(2));
             num += 1;
             allNum += 1;
-            time = audioContext.currentTime + .01;
+            time = audioContext.currentTime;
             if (Settings.game == "endurance"){
                 setTimeout(() => {x = Settings.time[0]}, 100);
             }
@@ -446,7 +446,7 @@ function pitch(){
                 setTimeout(() => {x = ((Settings.time[0] - Settings.advanced.minTime) * (Settings.advanced.timeRate) ** (degradeCount)) + Settings.advanced.minTime}, 100);
                 degradeCount += 1;
             }
-            exampleOn(random, 0.1);
+            exampleOn(random);
         }
         else{if (keyboard != -1){
             if (keyboard > -1){
