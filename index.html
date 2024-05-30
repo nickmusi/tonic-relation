@@ -27,7 +27,7 @@
         <div class="stats" id="time">0</div>
         <div class="stats" id="avgAccuracy">0</div>
      </div>
-    <div id="keyboard" class="keyboard">
+    <div name="pitch" id="keyboard" class="keyboard">
         <div style="position: relative; left: 2.5vw;">
             <button name="keyboard" class="keys" id="54">F#/Gb</button>
             <button name="keyboard" class="keys" id="56">G#/Ab</button>
@@ -58,7 +58,7 @@
         <button name="keyboard" class="keys" id="77">F</button>
         </div>
     </div>
-    <div hidden="true" id ="freq" class="freq">
+    <div hidden="true" name="freq" id ="freq" class="freq">
         <div style="height: 14.5vh; width: fit-content; margin: auto;">
             <div id="correct" hidden="true">
                 <img src="resources/correct.svg" class="checkmarks">
@@ -75,7 +75,8 @@
         </div>
         <label style="font-size: larger; font-weight: bold;" for="cutoff" id="freqLabel">Cutoff Frequency: </label>
         <input class="cutoff" id="cutoff" type="range" min="0" max="136" step="0.01">
-        <audio style="width: 97vw" id="source1" src=""></audio>
+        <audio style="width: 97vw" id="audio" src=""></audio>
+        <!--<iframe id="embed" width="0" height="0" src=""></iframe>-->
         <div style="width:fit-content; margin-left: auto;">
             <button style="width: min(21vw, 124px)" id="submit" class="start">Submit</button>
         </div>
@@ -95,13 +96,16 @@
     <div class="menuLabel" style="grid-column: 1; grid-row: 2;">Skill</div>
     <div class="menuLabel" style="grid-column: 2; grid-row: 2;">Game</div>
     <div class="menuLabel" style="grid-column: 3; grid-row: 2;">Difficulty</div>
-    <div class="menuLabel" style="grid-column: 4; grid-row: 2;">Scale</div>
-    <label class="menuLabel" for="key" style="grid-column: 5; grid-row: 2;">Key</label>
+    <div name="pitch" hidden class="menuLabel" style="grid-column: 4; grid-row: 2;">Scale</div>
+    <div name="freq" class="menuLabel" style="grid-column: 4; grid-row: 2;">Filter</div>
+    <label name="pitch" class="menuLabel" for="key" style="grid-column: 5; grid-row: 2;">Key</label>
+    <label name="freq" class="menuLabel" for="song" style="grid-column: 5; grid-row: 2;">Song</label>
     <button style="grid-column: 1; grid-row: 3;" title="Recognize notes in relation to a key!" class="modes" id="i11">Pitch</button>
     <button style="grid-column: 2; grid-row: 3;" title="Get as many notes right as you can before running out of lives!" class="modes" id="i21">Endurance</button>
     <button style="grid-column: 3; grid-row: 3;" title="3 Lives, A third of notes, and a drone!" class="modes" id="i31">Beginner</button>
-    <button style="grid-column: 4; grid-row: 3;" title="" class="modes" id="i41">Major</button>
-    <select style="grid-column: 5; grid-row: 3;" id="key" class="modes">
+    <button name="pitch" style="grid-column: 4; grid-row: 3;" title="" class="modes" id="i41">Major</button>
+    <button name="freq" style="grid-column: 4; grid-row: 3;" title="" class="modes" id="f41">Low-pass</button>
+    <select name="pitch" style="grid-column: 5; grid-row: 3;" id="key" class="modes">
         <option value="60">C</option>
         <option value="61">Db</option>
         <option value="62">D</option>
@@ -115,14 +119,22 @@
         <option value="58">Bb</option>
         <option value="59">B</option>
     </select>
+    <select name="freq" style="grid-column: 5; grid-row: 3;" id="song" class="modes">
+        <option value="rock">Rock</option>
+        <option value="custom">Custom</option>
+    </select>
+    <div hidden id="songSelect" style="grid-column: 5; grid-row: 4/5;">
+        <input accept="audio/*" id="file" type="file">
+        <!--<div><input id="url" type="url"></div>-->
+    </div>
     <button style="grid-column: 1; grid-row: 4;" title="Recognize and match EQ or filter settings applied to songs!" class="modes" id="i12">Frequency</button>
     <button style="grid-column: 2; grid-row: 4;" title="Every question, the time limit shrinks!" class="modes" id="i22">Time Attack</button>
     <button style="grid-column: 3; grid-row: 4;" title="2 lives, A fifth of notes, and a drone!" class="modes" id="i32">Intermediate</button>
-    <button style="grid-column: 4; grid-row: 4;" class="modes" id="i42">Minor</button>
+    <button name="pitch" style="grid-column: 4; grid-row: 4;" class="modes" id="i42">Minor</button>
     <button style="grid-column: 2; grid-row: 5;" title="Coming soon! Learn to recognize scale degrees!" class="modesDisabled" id="i23">Learn</button>
     <button style="grid-column: 3; grid-row: 5;" title="1 Life, octave of notes, and no drone!" class="modes" id="i33">Advanced</button>
     
-    <button style="grid-column: 4; grid-row: 5;" title="" class="modes" id="i43">Chromatic</button>
+    <button name="pitch" style="grid-column: 4; grid-row: 5;" title="" class="modes" id="i43">Chromatic</button>
     <button id="start" class="start" style="grid-column: 5; grid-row: 6;">Start</button>
 </div>
 <script src="script.js"></script>

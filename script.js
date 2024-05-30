@@ -52,6 +52,7 @@ var Settings = {
     drone: true,
     skill: "pitch",
     game: "endurance",
+    song:  "resources/HoliznaCC0 - Classic.mp3",
     freqThreshold: 0.8//What cutoff frequency accuracy the Frequency skill will consider correct
 };
 
@@ -85,6 +86,7 @@ qwertyMap[77] = "KeyI";
 var keyboard = -1;
 var highScore = 0;
 var keyOn = [];
+var embed = false;
 
 var i11 = true;
 var i12;
@@ -98,6 +100,9 @@ var i33;
 var i41 = true;
 var i42;
 var i43;
+var f41 = true;
+var f42;
+var f43;
 
 document.getElementById("info").addEventListener("click", () => {document.getElementById("infoMenu").hidden = false;})
 document.getElementById("infoClose").addEventListener("click", () => {document.getElementById("infoMenu").hidden = true;})
@@ -112,7 +117,7 @@ const droneGain = new GainNode(audioContext);
 const example = new OscillatorNode(audioContext);
 const exampleFlt = new BiquadFilterNode(audioContext);
 const exampleGain = new GainNode(audioContext);
-const htmlSource = document.getElementById("source1");
+var htmlSource = document.getElementById("audio");
 const source = new MediaElementAudioSourceNode(audioContext, {mediaElement: htmlSource});
 const hearAndMatchFlt = new BiquadFilterNode(audioContext);
 const hearAndMatchGain = new GainNode(audioContext);
@@ -152,13 +157,32 @@ function startMenu(){
     document.getElementById("i31").addEventListener("click", () => {i31 = true; i32 = false; i33 = false; check();}, {signal: abort.signal});
     document.getElementById("i32").addEventListener("click", () => {i31 = false; i32 = true; i33 = false; check();}, {signal: abort.signal});
     document.getElementById("i33").addEventListener("click", () => {i31 = false; i32 = false; i33 = true; check();}, {signal: abort.signal});
+    document.getElementById("f41").addEventListener("click", () => {f41 = true; f42 = false; f43 = false; check();}, {signal: abort.signal});
     document.getElementById("i41").addEventListener("click", () => {i41 = true; i42 = false; i43 = false; check();}, {signal: abort.signal});
     document.getElementById("i42").addEventListener("click", () => {i41 = false; i42 = true; i43 = false; check();}, {signal: abort.signal});
     document.getElementById("i43").addEventListener("click", () => {i41 = false; i42 = false; i43 = true; check();}, {signal: abort.signal});
     document.getElementById("start").addEventListener("click", start, {signal: abort.signal});
+    document.getElementById("song").addEventListener("change", check, {signal: abort.signal});
 
     function start(){
+        //#add check of if a custom song has been selected before running start code (maybe in event listener)
         Settings.key = Number(document.getElementById("key").value);
+        if (document.getElementById("song").value == "custom"){
+            if (document.getElementById("file").value != ""){
+                embed = false;
+                Settings.song = window.URL.createObjectURL(document.getElementById("file").files[0]);
+            }
+            /*else if (document.getElementById("url").value != ""){
+                embed = true;
+                Settings.song = document.getElementById("url").value
+            }*/
+            else {
+                alert("No custom file selected!")
+                abort.abort();
+                startMenu();
+                return
+            }
+        }
         if (Settings.skill == "pitch"){pitch();}
         if (Settings.skill == "frequency"){frequency();}
         
@@ -170,22 +194,21 @@ function startMenu(){
  
         if (i11){//1st column--------------------------------
             document.getElementById("i11").className = "modesActive";
-            document.getElementById("keyboard").hidden = false;
             Settings.skill = "pitch";
+            document.getElementsByName("pitch").forEach((element) => {element.hidden = false;});
         }
         else{
             document.getElementById("i11").className = "modes"; 
-            document.getElementById("keyboard").hidden = true;
+            document.getElementsByName("pitch").forEach((element) => {element.hidden = true;});
         }
         if (i12){
             document.getElementById("i12").className = "modesActive";
-            document.getElementById("freq").hidden = false;
             Settings.skill = "frequency";
-
+            document.getElementsByName("freq").forEach((element) => {element.hidden = false;});
         }
         else{
             document.getElementById("i12").className = "modes"; 
-            document.getElementById("freq").hidden = true;
+            document.getElementsByName("freq").forEach((element) => {element.hidden = true;});
         }
         /*if (i13){
             document.getElementById("i13").className = "modesActive";
@@ -254,6 +277,24 @@ function startMenu(){
         }
         else{
             document.getElementById("i43").className = "modes"; 
+        }
+        if (f41){
+            document.getElementById("f41").className = "modesActive";
+        }
+        else{
+            document.getElementById("f41").className = "modes";
+        }
+        if (document.getElementById("song").value == "rock"){
+            Settings.song = "resources/HoliznaCC0 - Classic.mp3"
+        }
+        else{
+            document.getElementById("songSelect").hidden = true;
+        }
+        if (document.getElementById("song").value == "custom"){
+            document.getElementById("songSelect").hidden = false;
+        }
+        else{
+            document.getElementById("songSelect").hidden = true;
         }
     }
 }
@@ -535,7 +576,13 @@ function frequency(){
     if (audioContext.state === "suspended"){
         audioContext.resume();
     }
-    htmlSource.setAttribute("src", "resources/HoliznaCC0 - Classic.mp3")//can choose audio file location
+    if (embed){
+        htmlSource = document.getElementById("embed");
+    }
+    else {
+        htmlSource = document.getElementById("audio");
+    }
+    htmlSource.setAttribute("src", Settings.song)//can choose audio file location
     hearAndMatchGain.gain.setValueAtTime(0.5, audioContext.currentTime);
     htmlSource.loop = true;
     //inputs--------------------------------------------------------
