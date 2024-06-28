@@ -104,8 +104,17 @@ var f41 = true;
 var f42;
 var f43;
 
-document.getElementById("info").addEventListener("click", () => {document.getElementById("infoMenu").hidden = false;})
-document.getElementById("infoClose").addEventListener("click", () => {document.getElementById("infoMenu").hidden = true;})
+document.addEventListener("click", (event) => {globalInputs(event);});
+
+function globalInputs(event){
+    var id = event.srcElement.id;
+    if (id == "info"){
+        document.getElementById("infoMenu").hidden = false;
+    }
+    if (id == "infoClose"){
+        document.getElementById("infoMenu").hidden = true;
+    }
+}
    
 //global variables
 
@@ -149,20 +158,52 @@ function startMenu(){
     check();
     var abort = new AbortController;
     exampleOff();
-    document.getElementById("i11").addEventListener("click", () => {i11 = true; i12 = false; i13 = false; check();}, {signal: abort.signal});
-    document.getElementById("i12").addEventListener("click", () => {i11 = false; i12 = true; i13 = false; check();}, {signal: abort.signal});
-    document.getElementById("i21").addEventListener("click", () => {i21 = true; i22 = false; i23 = false; check();}, {signal: abort.signal});
-    document.getElementById("i22").addEventListener("click", () => {i21 = false; i22 = true; i23 = false; check();}, {signal: abort.signal});
-    document.getElementById("i23").addEventListener("click", () => {i21 = false; i22 = false; i23 = true; check();}, {signal: abort.signal});
-    document.getElementById("i31").addEventListener("click", () => {i31 = true; i32 = false; i33 = false; check();}, {signal: abort.signal});
-    document.getElementById("i32").addEventListener("click", () => {i31 = false; i32 = true; i33 = false; check();}, {signal: abort.signal});
-    document.getElementById("i33").addEventListener("click", () => {i31 = false; i32 = false; i33 = true; check();}, {signal: abort.signal});
-    document.getElementById("f41").addEventListener("click", () => {f41 = true; f42 = false; f43 = false; check();}, {signal: abort.signal});
-    document.getElementById("i41").addEventListener("click", () => {i41 = true; i42 = false; i43 = false; check();}, {signal: abort.signal});
-    document.getElementById("i42").addEventListener("click", () => {i41 = false; i42 = true; i43 = false; check();}, {signal: abort.signal});
-    document.getElementById("i43").addEventListener("click", () => {i41 = false; i42 = false; i43 = true; check();}, {signal: abort.signal});
-    document.getElementById("start").addEventListener("click", start, {signal: abort.signal});
-    document.getElementById("song").addEventListener("change", check, {signal: abort.signal});
+    document.addEventListener("click", (event) => {inputs(event);}, {signal: abort.signal});
+    function inputs(event){
+        var id = event.srcElement.id;
+        if (id == "i11"){
+            i11 = true; i12 = false; i13 = false; check();
+        }
+        if (id == "i12"){
+            i11 = false; i12 = true; i13 = false; check();
+        }
+        if (id == "i21"){
+            i21 = true; i22 = false; i23 = false; check();
+        }
+        if (id == "i22"){
+            i22 = true; i21 = false; i23 = false; check();
+        }
+        if (id == "i23"){
+            i23 = true; i21 = false; i22 = false; check();
+        }
+        if (id == "i31"){
+            i31 = true; i32 = false; i33 = false; check();
+        }
+        if (id == "i32"){
+            i32 = true; i31 = false; i33 = false; check();
+        }
+        if (id == "i33"){
+            i33 = true; i31 = false; i32 = false; check();
+        }
+        if (id == "f41"){
+            f41 = true; f42 = false; f43 = false; check();
+        }
+        if (id == "i41"){
+            i41 = true; i42 = false; i43 = false; check();
+        }
+        if (id == "i42"){
+            i42 = true; i41 = false; i43 = false; check();
+        }
+        if (id == "i43"){
+            i43 = true; i41 = false; i42 = false; check();
+        }
+        if (id == "start"){
+            start();
+        }
+        if (id == "song"){
+            check();
+        }
+    }
 
     function start(){
         //#add check of if a custom song has been selected before running start code (maybe in event listener)
@@ -290,7 +331,7 @@ function startMenu(){
         else{
             document.getElementById("songSelect").hidden = true;
         }
-        if (document.getElementById("song").value == "custom"){
+        if (document.getElementById("song").value == "custom" && i12){
             document.getElementById("songSelect").hidden = false;
         }
         else{
@@ -356,31 +397,35 @@ function exampleOff(){
 function pitch(){
     var inputs = new AbortController;
     //inputs
-    document.getElementById("53").addEventListener("click", () => {keyboard = 53; check();}, {signal: inputs.signal});
-    document.getElementById("54").addEventListener("click", () => {keyboard = 54; check();}, {signal: inputs.signal});
-    document.getElementById("55").addEventListener("click", () => {keyboard = 55; check();}, {signal: inputs.signal});
-    document.getElementById("56").addEventListener("click", () => {keyboard = 56; check();}, {signal: inputs.signal});
-    document.getElementById("57").addEventListener("click", () => {keyboard = 57; check();}, {signal: inputs.signal});
-    document.getElementById("58").addEventListener("click", () => {keyboard = 58; check();}, {signal: inputs.signal});
-    document.getElementById("59").addEventListener("click", () => {keyboard = 59; check();}, {signal: inputs.signal});
-    document.getElementById("60").addEventListener("click", () => {keyboard = 60; check();}, {signal: inputs.signal});
-    document.getElementById("61").addEventListener("click", () => {keyboard = 61; check();}, {signal: inputs.signal});
-    document.getElementById("62").addEventListener("click", () => {keyboard = 62; check();}, {signal: inputs.signal});
-    document.getElementById("63").addEventListener("click", () => {keyboard = 63; check();}, {signal: inputs.signal});
-    document.getElementById("64").addEventListener("click", () => {keyboard = 64; check();}, {signal: inputs.signal});
-    document.getElementById("65").addEventListener("click", () => {keyboard = 65; check();}, {signal: inputs.signal});
-    document.getElementById("66").addEventListener("click", () => {keyboard = 66; check();}, {signal: inputs.signal});
-    document.getElementById("67").addEventListener("click", () => {keyboard = 67; check();}, {signal: inputs.signal});
-    document.getElementById("68").addEventListener("click", () => {keyboard = 68; check();}, {signal: inputs.signal});
-    document.getElementById("69").addEventListener("click", () => {keyboard = 69; check();}, {signal: inputs.signal});
-    document.getElementById("70").addEventListener("click", () => {keyboard = 70; check();}, {signal: inputs.signal});
-    document.getElementById("71").addEventListener("click", () => {keyboard = 71; check();}, {signal: inputs.signal});
-    document.getElementById("72").addEventListener("click", () => {keyboard = 72; check();}, {signal: inputs.signal});
-    document.getElementById("73").addEventListener("click", () => {keyboard = 73; check();}, {signal: inputs.signal});
-    document.getElementById("74").addEventListener("click", () => {keyboard = 74; check();}, {signal: inputs.signal});
-    document.getElementById("75").addEventListener("click", () => {keyboard = 75; check();}, {signal: inputs.signal});
-    document.getElementById("76").addEventListener("click", () => {keyboard = 76; check();}, {signal: inputs.signal});
-    document.getElementById("77").addEventListener("click", () => {keyboard = 77; check();}, {signal: inputs.signal});
+    document.addEventListener("click", (event) => {inputFunc(event);}, {signal: inputs.signal});
+    function inputFunc(event){
+        var id = event.srcElement.id;
+        if (id == "53"){keyboard = 53; check();}
+        if (id == "54"){keyboard = 54; check();}
+        if (id == "55"){keyboard = 55; check();}
+        if (id == "56"){keyboard = 56; check();}
+        if (id == "57"){keyboard = 57; check();}
+        if (id == "58"){keyboard = 58; check();}
+        if (id == "59"){keyboard = 59; check();}
+        if (id == "60"){keyboard = 60; check();}
+        if (id == "61"){keyboard = 61; check();}
+        if (id == "62"){keyboard = 62; check();}
+        if (id == "63"){keyboard = 63; check();}
+        if (id == "64"){keyboard = 64; check();}
+        if (id == "65"){keyboard = 65; check();}
+        if (id == "66"){keyboard = 66; check();}
+        if (id == "67"){keyboard = 67; check();}
+        if (id == "68"){keyboard = 68; check();}
+        if (id == "69"){keyboard = 69; check();}
+        if (id == "70"){keyboard = 70; check();}
+        if (id == "71"){keyboard = 71; check();}
+        if (id == "72"){keyboard = 72; check();}
+        if (id == "73"){keyboard = 73; check();}
+        if (id == "74"){keyboard = 74; check();}
+        if (id == "75"){keyboard = 75; check();}
+        if (id == "76"){keyboard = 76; check();}
+        if (id == "77"){keyboard = 77; check();}
+    }
 
     document.addEventListener("keydown", keycheck, {signal: inputs.signal});
     function keycheck(key){
@@ -599,10 +644,14 @@ function frequency(){
     degradeCount = 0;
     document.getElementById("cutoff").value = 20000;
 
-    document.getElementById("hear").addEventListener("click", () => {match = false; check();}, {signal: inputs.signal});
-    document.getElementById("match").addEventListener("click", () => {match = true; check();}, {signal: inputs.signal});
+    document.addEventListener("click", (event) => {inputFunc(event);}, {signal: inputs.signal});
+    function inputFunc(event){
+        var id = event.srcElement.id;
+        if (id == "hear"){match = false; check();}
+        if (id == "match"){match = true; check();}
+        if (id == "submit"){submit();}
+    }
     document.getElementById("cutoff").addEventListener("input", () => {matchValue = mtof(document.getElementById("cutoff").value); document.getElementById("freqLabel").innerHTML = "Cutoff Frequency: " + String(Math.min(Math.round(matchValue), 20000))  + " Hz"; check();}, {signal: inputs.signal});
-    document.getElementById("submit").addEventListener("click", submit, {signal: inputs.signal});
     document.getElementById("hear").click();
     function check(){
         if (match){
