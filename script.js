@@ -53,7 +53,8 @@ var Settings = {
     skill: "pitch",
     game: "endurance",
     song:  "resources/HoliznaCC0 - Classic.mp3",
-    freqThreshold: 0.8//What cutoff frequency accuracy the Frequency skill will consider correct
+    freqThreshold: 0.8,//What cutoff frequency accuracy the Frequency skill will consider correct
+    chords: []
 };
 
 var qwertyMap = [];
@@ -167,6 +168,9 @@ function startMenu(){
         if (id == "i12"){
             i11 = false; i12 = true; i13 = false; check();
         }
+        if (id == "i13"){
+            i11 = false; i12 = false; i13 = true; check();
+        }
         if (id == "i21"){
             i21 = true; i22 = false; i23 = false; check();
         }
@@ -190,6 +194,46 @@ function startMenu(){
         }
         if (id == "i41"){
             i41 = true; i42 = false; i43 = false; check();
+        }
+        if (id == "j41"){
+            if (document.getElementById(id).className == "modes"){
+                document.getElementById(id).className = "modesActive";
+                Settings.chords.push("major");
+            }
+            else{
+                document.getElementById(id).className = "modes";
+                Settings.chords = Settings.chords.filter((item) => item != "major");
+            }  
+        }
+        if (id == "j42"){
+            if (document.getElementById(id).className == "modes"){
+                document.getElementById(id).className = "modesActive";
+                Settings.chords.push("minor");
+            }
+            else{
+                document.getElementById(id).className = "modes";
+                Settings.chords = Settings.chords.filter((item) => item != "minor");
+            }  
+        }
+        if (id == "j51"){
+            if (document.getElementById(id).className == "modes"){
+                document.getElementById(id).className = "modesActive";
+                Settings.chords.push("sevenths");
+            }
+            else{
+                document.getElementById(id).className = "modes";
+                Settings.chords = Settings.chords.filter((item) => item != "sevenths");
+            }  
+        }
+        if (id == "j52"){
+            if (document.getElementById(id).className == "modes"){
+                document.getElementById(id).className = "modesActive";
+                Settings.chords.push("inversions");
+            }
+            else{
+                document.getElementById(id).className = "modes";
+                Settings.chords = Settings.chords.filter((item) => item != "inversions");
+            }  
         }
         if (id == "i42"){
             i42 = true; i41 = false; i43 = false; check();
@@ -251,11 +295,14 @@ function startMenu(){
             document.getElementById("i12").className = "modes"; 
             document.getElementsByName("freq").forEach((element) => {element.hidden = true;});
         }
-        /*if (i13){
+        if (i13){
             document.getElementById("i13").className = "modesActive";
+            Settings.skill = "justIntonation"
+            document.getElementsByName("just").forEach((element) => {element.hidden = false;});
         }
         else{
-            document.getElementById("i13").className = "modes"; 
+            document.getElementById("i13").className = "modes";
+            document.getElementsByName("just").forEach((element) => {element.hidden = true;});
         }//1st column--------------------------------*/
         if (i21){//2nd colum---------------
             document.getElementById("i21").className = "modesActive";
