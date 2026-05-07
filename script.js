@@ -55,8 +55,8 @@ var Settings = {
     song:  "resources/HoliznaCC0 - Classic.mp3",
     freqThreshold: 0.8,//What cutoff frequency accuracy the Frequency skill will consider correct
     chords: [],
-    inversion: true,
-    inversionProbability: 1,
+    inversion: false,
+    inversionProbability: 0.6,
     chordOctaveSpread: 2
 };
 
@@ -447,7 +447,7 @@ function randomChord(bassNote = ftom(randomFreq(65, 200))){
         chord[index] = chord[index] + offset; 
         if (index != bass){
             chord[index] = chord[index] + 12 * randomNumber(0, Settings.chordOctaveSpread);
-            if (chord[index] < chord[bass]){
+            if (chord[index] < bassNote){
                 chord[index] = chord[index] + 12;
             }
         }
