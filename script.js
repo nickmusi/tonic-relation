@@ -54,7 +54,7 @@ var Settings = {
     game: "endurance",
     song:  "resources/HoliznaCC0 - Classic.mp3",
     freqThreshold: 0.8,//What cutoff frequency accuracy the Frequency skill will consider correct
-    chords: [{notes: [0, 4, 7], quality: "major"}],//remove that element, just for test
+    chords: [],
     inversion: true,
     inversionProbability: 1,
     chordOctaveSpread: 2
@@ -208,7 +208,7 @@ function startMenu(){
                 Settings.chords = Settings.chords.filter((item) => JSON.stringify(item) !== JSON.stringify({notes: [0, 4, 7], quality: "major"}));
             }  
         }
-        if (id == "j42"){
+        if (id == "j51"){
             if (document.getElementById(id).className == "modes"){
                 document.getElementById(id).className = "modesActive";
                 Settings.chords.push({notes: [0, 3, 7], quality: "minor"});
@@ -218,17 +218,37 @@ function startMenu(){
                 Settings.chords = Settings.chords.filter((item) => JSON.stringify(item) !== JSON.stringify({notes: [0, 3, 7], quality: "minor"}));
             }  
         }
-        if (id == "j51"){
+        if (id == "j42"){
             if (document.getElementById(id).className == "modes"){
                 document.getElementById(id).className = "modesActive";
-                Settings.chords.push("sevenths");
+                Settings.chords.push({notes: [0, 4, 7, 11], quality: "maj7"});
             }
             else{
                 document.getElementById(id).className = "modes";
-                Settings.chords = Settings.chords.filter((item) => item != "sevenths");
+                Settings.chords = Settings.chords.filter((item) => JSON.stringify(item) !== JSON.stringify({notes: [0, 4, 7, 11], quality: "maj7"}));
             }  
         }
         if (id == "j52"){
+            if (document.getElementById(id).className == "modes"){
+                document.getElementById(id).className = "modesActive";
+                Settings.chords.push({notes: [0, 3, 7, 10], quality: "min7"});
+            }
+            else{
+                document.getElementById(id).className = "modes";
+                Settings.chords = Settings.chords.filter((item) => JSON.stringify(item) !== JSON.stringify({notes: [0, 3, 7, 10], quality: "min7"}));
+            }  
+        }
+        if (id == "j43"){
+            if (document.getElementById(id).className == "modes"){
+                document.getElementById(id).className = "modesActive";
+                Settings.chords.push({notes: [0, 4, 7, 10], quality: "dom7"});
+            }
+            else{
+                document.getElementById(id).className = "modes";
+                Settings.chords = Settings.chords.filter((item) => JSON.stringify(item) !== JSON.stringify({notes: [0, 4, 7, 10], quality: "dom7"}));
+            }  
+        }
+        if (id == "j53"){
             if (document.getElementById(id).className == "modes"){
                 document.getElementById(id).className = "modesActive";
                 Settings.inversion = true;
