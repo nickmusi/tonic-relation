@@ -54,7 +54,10 @@ var Settings = {
     game: "endurance",
     song:  "resources/HoliznaCC0 - Classic.mp3",
     freqThreshold: 0.8,//What cutoff frequency accuracy the Frequency skill will consider correct
-    chords: []
+    chords: [{notes: [0, 4, 7], quality: "major"}],//remove that element, just for test
+    inversion: true,
+    inversionProbability: 1,
+    chordOctaveSpread: 2
 };
 
 var qwertyMap = [];
@@ -198,21 +201,21 @@ function startMenu(){
         if (id == "j41"){
             if (document.getElementById(id).className == "modes"){
                 document.getElementById(id).className = "modesActive";
-                Settings.chords.push("major");
+                Settings.chords.push({notes: [0, 4, 7], quality: "major"});
             }
             else{
                 document.getElementById(id).className = "modes";
-                Settings.chords = Settings.chords.filter((item) => item != "major");
+                Settings.chords = Settings.chords.filter((item) => JSON.stringify(item) !== JSON.stringify({notes: [0, 4, 7], quality: "major"}));
             }  
         }
         if (id == "j42"){
             if (document.getElementById(id).className == "modes"){
                 document.getElementById(id).className = "modesActive";
-                Settings.chords.push("minor");
+                Settings.chords.push({notes: [0, 3, 7], quality: "minor"});
             }
             else{
                 document.getElementById(id).className = "modes";
-                Settings.chords = Settings.chords.filter((item) => item != "minor");
+                Settings.chords = Settings.chords.filter((item) => JSON.stringify(item) !== JSON.stringify({notes: [0, 3, 7], quality: "minor"}));
             }  
         }
         if (id == "j51"){
@@ -228,11 +231,11 @@ function startMenu(){
         if (id == "j52"){
             if (document.getElementById(id).className == "modes"){
                 document.getElementById(id).className = "modesActive";
-                Settings.chords.push("inversions");
+                Settings.inversion = true;
             }
             else{
                 document.getElementById(id).className = "modes";
-                Settings.chords = Settings.chords.filter((item) => item != "inversions");
+                Settings.inversion = false;
             }  
         }
         if (id == "i42"){
@@ -270,6 +273,7 @@ function startMenu(){
         }
         if (Settings.skill == "pitch"){pitch();}
         if (Settings.skill == "frequency"){frequency();}
+        if (Settings.skill == "justIntonation"){justIntonation();}
         
         document.getElementById("startMenu").hidden = true;
         document.getElementById("body").className = "body";
@@ -406,8 +410,37 @@ function randomNote(exception = -1){
     
 }
 
+function randomChord(bassNote = ftom(randomFreq(65, 200))){
+    var chord = []
+    var qualIndex = randomNumber(0, Settings.chords.length - 1)
+    Settings.chords[qualIndex].notes.forEach((element) => chord.push(element));
+    var bass
+    if (Settings.inversion && Math.random() < Settings.inversionProbability){
+        bass = randomNumber(0, chord.length - 1);
+    }
+    else{
+        bass = 0
+    }
+    var offset = bassNote - chord[bass];
+    chord.forEach((element) => {
+        var index = chord.indexOf(element);
+        chord[index] = chord[index] + offset; 
+        if (index != bass){
+            chord[index] = chord[index] + 12 * randomNumber(0, Settings.chordOctaveSpread);
+            if (chord[index] < chord[bass]){
+                chord[index] = chord[index] + 12;
+            }
+        }
+    });
+    return {notes: chord, quality: Settings.chords[qualIndex].quality};
+}
+
 function randomFreq(min = 40, max = 15000){
     return mtof(((ftom(max) - ftom(min)) * Math.random()) + ftom(min))
+}
+
+function randomNumber(min = 0, max = 1){
+    return Math.round((max - min) * Math.random() + min)
 }
 
 function mtof(x){
@@ -798,4 +831,16 @@ function frequency(){
         degradeCount = 0;
     }
 
+}
+
+function justIntonation(){
+    var chord = randomChord();
+    /*
+    get random starting note
+    select a chord at random maj, min, maj7, min7, dom7
+    invert chord? have probability of this
+    select specific notes
+    offset all the notes (except the root) by a little bit
+    play the notes
+    */
 }
