@@ -57,7 +57,9 @@ var Settings = {
     chords: [],
     inversion: false,
     inversionProbability: 0.6,
-    chordOctaveSpread: 2
+    chordOctaveSpread: 1,//how many octaves to spread generated chords out
+    tuningError: 0.3,//in just intonation mode, sets how far off the chords can be in semitones
+    filter: 1.5//How many times higher than a note's frequency its filter should be
 };
 
 var qwertyMap = [];
@@ -130,6 +132,17 @@ const droneGain = new GainNode(audioContext);
 const example = new OscillatorNode(audioContext);
 const exampleFlt = new BiquadFilterNode(audioContext);
 const exampleGain = new GainNode(audioContext);
+
+for (i = 0; i < 4; i++){
+    eval("var chord" + String(i) + " = new OscillatorNode(audioContext); var chord" + String(i) + "Flt = new BiquadFilterNode(audioContext); var chord" + String(i) + "Gain = new GainNode(audioContext);")
+    eval("chord" + String(i) + ".type = 'sawtooth';");
+    eval("chord" + String(i) + "Gain.gain.value = 0;");
+    eval("chord" + String(i) + ".connect(chord" + String(i) + "Flt);");
+    eval("chord" + String(i) + "Flt.connect(chord" + String(i) + "Gain);");
+    eval("chord" + String(i) + "Gain.connect(audioContext.destination);");
+    eval("chord" + String(i) + ".start(audioContext.currentTime);")
+}
+
 var htmlSource = document.getElementById("audio");
 const source = new MediaElementAudioSourceNode(audioContext, {mediaElement: htmlSource});
 const hearAndMatchFlt = new BiquadFilterNode(audioContext);
@@ -137,7 +150,6 @@ const hearAndMatchGain = new GainNode(audioContext);
 
 drone.type = "square";
 example.type = "sawtooth";
-const filter = 1;
 droneGain.gain.value = 0;
 exampleGain.gain.value = 0;
 
@@ -474,14 +486,28 @@ function ftom(x){
 function droneOn(note, time = 0){
     droneGain.gain.setTargetAtTime(0.25, audioContext.currentTime + time, 0.08);
     drone.frequency.setValueAtTime(mtof(note), audioContext.currentTime + time);
-    droneFlt.frequency.setValueAtTime(mtof(note) * filter, audioContext.currentTime + time);
+    droneFlt.frequency.setValueAtTime(mtof(note) * Settings.filter, audioContext.currentTime + time);
     
 }
 
 function exampleOn(note, time = 0){
     exampleGain.gain.setTargetAtTime(0.25, audioContext.currentTime + time, 0.08);
     example.frequency.setValueAtTime(mtof(note), audioContext.currentTime + time);
-    exampleFlt.frequency.setValueAtTime(mtof(note) * filter, audioContext.currentTime + time);
+    exampleFlt.frequency.setValueAtTime(mtof(note) * Settings.filter, audioContext.currentTime + time);
+}
+
+function chordOn(chord, time = 0){
+    chord.notes.forEach((element, index)=>{
+        eval("chord" + String(index) + "Gain.gain.setTargetAtTime(0.25, audioContext.currentTime + time, 0.08);");
+        eval("chord" + String(index) + ".frequency.setValueAtTime(mtof(element), audioContext.currentTime + time);");
+        eval("chord" + String(index) + "Flt.frequency.setValueAtTime(mtof(element) * Settings.filter, audioContext.currentTime + time);");
+    });
+}
+
+function chordOff(){
+    for (i = 0; i < 4; i++){
+        eval("chord" + String(i) + "Gain.gain.setTargetAtTime(0, audioContext.currentTime, 0.08);")
+    }
 }
 
 function droneOff(){
@@ -712,7 +738,7 @@ function startAudio(){
     
     example.frequency.setValueAtTime(mtof(note), audioContext.currentTime);
     
-    exampleFlt.frequency.setValueAtTime(mtof(note) * filter, audioContext.currentTime);
+    exampleFlt.frequency.setValueAtTime(mtof(note) * Settings.filter, audioContext.currentTime);
     
     example.start(audioContext.currentTime + 1.5);
 }
@@ -854,13 +880,11 @@ function frequency(){
 }
 
 function justIntonation(){
-    var chord = randomChord();
-    /*
-    get random starting note
-    select a chord at random maj, min, maj7, min7, dom7
-    invert chord? have probability of this
-    select specific notes
-    offset all the notes (except the root) by a little bit
-    play the notes
-    */
+    var chord = randomChord(60);
+    chord.notes.forEach((element, index) =>{
+        chord.notes[index] = chord.notes[index] + Settings.tuningError * 2 * Math.random();
+    })
+    chordOn(chord);
+    console.log(chord.notes);
+    setTimeout(chordOff, 1000);
 }
