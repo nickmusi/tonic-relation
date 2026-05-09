@@ -54,12 +54,12 @@ var Settings = {
     game: "endurance",
     song:  "resources/HoliznaCC0 - Classic.mp3",
     freqThreshold: 0.8,//What cutoff frequency accuracy the Frequency skill will consider correct
-    chords: [],
+    chords: [{notes: [0, 4, 7], quality: "major"}],
     inversion: false,
     inversionProbability: 0.6,
     chordOctaveSpread: 1,//how many octaves to spread generated chords out
     tuningError: 0.3,//in just intonation mode, sets how far off the chords can be in semitones
-    filter: 1.5//How many times higher than a note's frequency its filter should be
+    filter: 8//How many times higher than a note's frequency its filter should be
 };
 
 var qwertyMap = [];
@@ -285,7 +285,6 @@ function startMenu(){
     }
 
     function start(){
-        //#add check of if a custom song has been selected before running start code (maybe in event listener)
         Settings.key = Number(document.getElementById("key").value);
         if (document.getElementById("song").value == "custom"){
             if (document.getElementById("file").value != ""){
@@ -296,7 +295,7 @@ function startMenu(){
                 embed = true;
                 Settings.song = document.getElementById("url").value
             }*/
-            else {
+            else if(Settings.skill == "frequency"){
                 alert("No custom file selected!")
                 abort.abort();
                 startMenu();
@@ -305,7 +304,15 @@ function startMenu(){
         }
         if (Settings.skill == "pitch"){pitch();}
         if (Settings.skill == "frequency"){frequency();}
-        if (Settings.skill == "justIntonation"){justIntonation();}
+        if (Settings.skill == "justIntonation"){
+            if (Settings.chords.length == 0){
+                alert("Must select at least one type of chord!")
+                abort.abort();
+                startMenu();
+                return;
+            }
+            justIntonation();
+        }
         
         document.getElementById("startMenu").hidden = true;
         document.getElementById("body").className = "body";
@@ -880,11 +887,66 @@ function frequency(){
 }
 
 function justIntonation(){
-    var chord = randomChord(60);
+    if (audioContext.state === "suspended"){
+        audioContext.resume();
+    }
+
+    var inputs = new AbortController;
+    var chord = randomChord(48);
     chord.notes.forEach((element, index) =>{
-        chord.notes[index] = chord.notes[index] + Settings.tuningError * 2 * Math.random();
+        chord.notes[index] = chord.notes[index] + Settings.tuningError * 2 * Math.random() - Settings.tuningError / 2;
     })
     chordOn(chord);
-    console.log(chord.notes);
-    setTimeout(chordOff, 1000);
+    //setTimeout(chordOff, 5000);
+
+    for (i = 0; i < 4; i++){
+        document.getElementById("pitch" + String(i)).addEventListener('input', (event) => {
+            var index = event.target.id.replaceAll(/\D+/g, "");
+            eval("chord" + String(index) + ".frequency.setValueAtTime(mtof(Number(event.target.value) + chord.notes[index]), audioContext.currentTime);")
+        }, {signal: inputs.signal});
+        document.getElementById("gain" + String(i)).addEventListener('input', (event) => {
+            var index = event.target.id.replaceAll(/\D+/g, "");
+            eval("chord" + String(index) + "Gain.gain.setValueAtTime((Number(event.target.value)), audioContext.currentTime);")
+        }, {signal: inputs.signal});
+    }
+
+    document.getElementById("justSubmit").addEventListener("click", ()=>{
+        console.log(check(chord));
+    }, {signal: inputs.signal});
+
+
+    function check(chord){
+
+        chord.notes.forEach((element, index) =>{
+            chord.notes[index] = chord.notes[index] + Number(document.getElementById('pitch' + String(index)).value);
+        })
+        var chordError = []
+        if (chord.quality == "major" || chord.quality == "maj7" || chord.quality == "dom7"){//check the major third's tuning
+            chordError[1] = justIntonationError(chord.notes[0], chord.notes[1], 5);
+        }
+        if (chord.quality == "minor" || chord.quality == "min7"){//check the minor third's tuning
+            chordError[1] = justIntonationError(chord.notes[0], chord.notes[1], 6/5);
+        }
+        chordError[2] = justIntonationError(chord.notes[0], chord.notes[2], 3) ;
+        if (chord.quality == "dom7"){//check domininat 7 chord tuning
+            chordError[3] = justIntonationError(chord.notes[0], chord.notes[3], 7);
+        }
+        if (chord.quality == "maj7" || chord.quality == "min7"){//check maj and minor 7 tuning
+            chordError[3] = justIntonationError(chord.notes[1] - chordError[1], chord.notes[3], 3);
+        }
+
+        return chordError;
+    }
 }
+
+function justIntonationError(root=60, interval=63, ratio=6/5){
+    var best = 200;//arbitraily large number
+    var test;
+    for (i = -5; i < 6; i++){
+        test = ftom(2 ** i / ratio * mtof(interval)) - root;
+        if (Math.abs(test) < Math.abs(best)){
+            best = test;
+        }
+    }
+    return best;
+};

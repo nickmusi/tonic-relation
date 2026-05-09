@@ -170,3 +170,7 @@
     width: 11vh;
     padding: 1.5vh;
 }
+.pitchCorrect{
+    writing-mode: vertical-lr;
+    direction: rtl;
+}

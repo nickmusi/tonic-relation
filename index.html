@@ -81,6 +81,21 @@
             <button style="width: min(21vw, 124px)" id="submit" class="start">Submit</button>
         </div>
     </div>
+    <div hidden="true" name="just" id="just" class="just">
+        <div>
+            <input class="pitchCorrect" id="pitch0" type="range" min="-0.5" max="0.5" step="0.001" value="0">
+            <input class="pitchCorrect" id="pitch1" type="range" min="-0.5" max="0.5" step="0.001" value="0">
+            <input class="pitchCorrect" id="pitch2" type="range" min="-0.5" max="0.5" step="0.001" value="0">
+            <input class="pitchCorrect" id="pitch3" type="range" min="-0.5" max="0.5" step="0.001" value="0">
+        </div>
+        <div>
+            <input class="pitchCorrect" id="gain0" type="range" min="0" max="0.6" step="0.01" value="0.3">
+            <input class="pitchCorrect" id="gain1" type="range" min="0" max="0.6" step="0.01" value="0.3">
+            <input class="pitchCorrect" id="gain2" type="range" min="0" max="0.6" step="0.01" value="0.3">
+            <input class="pitchCorrect" id="gain3" type="range" min="0" max="0.6" step="0.01" value="0.3">
+            <button style="width: min(21vw, 124px)" id="justSubmit" class="start">Submit</button>
+        </div>
+    </div>
 </div>
 <div id="startMenu" class="startMenu">
     <div hidden="" style=" grid-column: 1 / 6; grid-template-columns: 20% 20% 20% 20% 20%; grid-row: 1; display: inline-grid;" id="endMenu">
@@ -105,7 +120,7 @@
     <button style="grid-column: 2; grid-row: 3;" title="Get as many notes right as you can before running out of lives!" class="modes" id="i21">Endurance</button>
     <button style="grid-column: 3; grid-row: 3;" title="3 Lives, A third of notes, and a drone!" class="modes" id="i31">Beginner</button>
     <button name="pitch" style="grid-column: 4; grid-row: 3;" title="" class="modes" id="i41">Major</button>
-    <button name="just" style="grid-column: 4; grid-row: 3;" title="" class="modes" id="j41">Major</button>
+    <button name="just" style="grid-column: 4; grid-row: 3;" title="" class="modesActive" id="j41">Major</button>
     <button name="just" style="grid-column: 5; grid-row: 3;" title="" class="modes" id="j51">Minor</button>
     <button name="just" style="grid-column: 4; grid-row: 4;" title="" class="modes" id="j42">Major Seventh</button>
     <button name="just" style="grid-column: 5; grid-row: 4;" title="" class="modes" id="j52">Minor Seventh</button>
