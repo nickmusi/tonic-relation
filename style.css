@@ -173,4 +173,10 @@
 .pitchCorrect{
     writing-mode: vertical-lr;
     direction: rtl;
+    width: 12.5vw;
+    height: 20vh;
+}
+.justTuningError {
+    margin: 0px;
+    margin-block: -32px;
 }

@@ -909,9 +909,47 @@ function justIntonation(){
             eval("chord" + String(index) + "Gain.gain.setValueAtTime((Number(event.target.value)), audioContext.currentTime);")
         }, {signal: inputs.signal});
     }
-
-    document.getElementById("justSubmit").addEventListener("click", ()=>{
-        console.log(check(chord));
+    var thisError
+    document.addEventListener("click", (event)=>{
+        var id = event.target.id;
+        if (id == "justSubmit"){
+            thisError = check(chord);
+            document.getElementsByName("justEnd").forEach((element)=> {element.hidden = false;})
+            document.getElementById("justSubmit").hidden = true;
+            document.getElementById("3rdError").innerHTML = "3rd: " + String(Math.round(thisError[1] * 10000)/100) + " cents off";
+            document.getElementById("5thError").innerHTML = "5th: " + String(Math.round(thisError[2] * 10000)/100) + " cents off";
+            if (thisError[3] == undefined){
+                document.getElementById("7thError").innerHTML = "         ";
+            }
+            else {
+                document.getElementById("7thError").innerHTML = "7th: " + String(Math.round(thisError[3] * 10000)/100) + " cents off";
+            }
+        }
+        if (id == "justNext"){
+            document.getElementsByName("justEnd").forEach((element)=> {element.hidden = true;})
+            document.getElementById("justSubmit").hidden = false;
+        }
+        if (id == "hearError"){
+            if (event.target.className != "modesActive"){
+                chord.notes.forEach((element, index)=>{
+                    chord.notes[index] = chord.notes[index] + thisError[index];
+                })
+                chordOn(chord);
+            }
+            event.target.className = "modesActive";
+            document.getElementById("hearJust").className = "modes"
+        }
+        if (id == "hearJust"){
+            if (event.target.className != "modesActive"){
+                chord.notes.forEach((element, index)=>{
+                    chord.notes[index] = chord.notes[index] - thisError[index];
+                })
+                chordOn(chord);
+            }
+            event.target.className = "modesActive";
+            document.getElementById("hearError").className = "modes"
+        }
+        //show error, and allow user to switch between in-tune and their tuning
     }, {signal: inputs.signal});
 
 
@@ -920,7 +958,7 @@ function justIntonation(){
         chord.notes.forEach((element, index) =>{
             chord.notes[index] = chord.notes[index] + Number(document.getElementById('pitch' + String(index)).value);
         })
-        var chordError = []
+        var chordError = [0, 0, 0]
         if (chord.quality == "major" || chord.quality == "maj7" || chord.quality == "dom7"){//check the major third's tuning
             chordError[1] = justIntonationError(chord.notes[0], chord.notes[1], 5);
         }
