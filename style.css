@@ -170,13 +170,23 @@
     width: 11vh;
     padding: 1.5vh;
 }
-.pitchCorrect{
+.pitchCorrect {
     writing-mode: vertical-lr;
     direction: rtl;
-    width: 12.5vw;
-    height: 20vh;
+    width: 2.5vw;
+    height: 47vh;
+    visibility: hidden;
+}
+.pitchSlideSpacer {
+    height: 0px;
+    width: 5vw;
+}
+.sliderLabel{
+    writing-mode: sideways-lr;
+    text-align: right;
+    margin-left: 0px;
+    margin: 0px;
 }
 .justTuningError {
     margin: 0px;
-    margin-block: -32px;
 }

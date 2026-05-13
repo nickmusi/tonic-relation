@@ -505,7 +505,7 @@ function exampleOn(note, time = 0){
 
 function chordOn(chord, time = 0){
     chord.notes.forEach((element, index)=>{
-        eval("chord" + String(index) + "Gain.gain.setTargetAtTime(0.25, audioContext.currentTime + time, 0.08);");
+        eval("if (chord" + String(index) + "Gain.gain.value == 0){chord" + String(index) + "Gain.gain.setTargetAtTime(0.25, audioContext.currentTime + time, 0.08);}");
         eval("chord" + String(index) + ".frequency.setValueAtTime(mtof(element), audioContext.currentTime + time);");
         eval("chord" + String(index) + "Flt.frequency.setValueAtTime(mtof(element) * Settings.filter, audioContext.currentTime + time);");
     });
@@ -895,6 +895,8 @@ function justIntonation(){
     var chord = randomChord(48);
     chord.notes.forEach((element, index) =>{
         chord.notes[index] = chord.notes[index] + Settings.tuningError * 2 * Math.random() - Settings.tuningError / 2;
+        document.getElementById("pitch" + String(index)).style = "visibility: visible";
+        document.getElementById("gain" + String(index)).style = "visibility: visible";
     })
     chordOn(chord);
     //setTimeout(chordOff, 5000);
@@ -928,6 +930,23 @@ function justIntonation(){
         if (id == "justNext"){
             document.getElementsByName("justEnd").forEach((element)=> {element.hidden = true;})
             document.getElementById("justSubmit").hidden = false;
+            for (j = 0; document.getElementsByClassName("pitchCorrect")[j] != undefined; j++){
+                if (j % 2 == 0){
+                    document.getElementsByClassName("pitchCorrect")[j].value = "0";
+                }
+                else{
+                    document.getElementsByClassName("pitchCorrect")[j].value = "0.3";
+                }
+                document.getElementsByClassName("pitchCorrect")[j].style = "visibility: hidden";
+            }
+            chord = randomChord(48);
+            chord.notes.forEach((element, index) =>{
+                eval("chord" + index + "Gain.gain.setTargetAtTime(0.3, audioContext.currentTime, 0.2);")
+                document.getElementById("pitch" + String(index)).style = "visibility: visible";
+                document.getElementById("gain" + String(index)).style = "visibility: visible";
+                chord.notes[index] = chord.notes[index] + Settings.tuningError * 2 * Math.random() - Settings.tuningError / 2;
+            })
+            chordOn(chord);
         }
         if (id == "hearError"){
             if (event.target.className != "modesActive"){
