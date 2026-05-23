@@ -7,6 +7,7 @@ const beginner = {
     time: [8, 60],
     drone: true,
     freqThreshold: 0.7,
+    justThreshold: 0.82,
     advanced: {
         showOptions: true,
         minTime: 0.9,//sets the minimum time for time attack
@@ -19,6 +20,7 @@ const intermediate = {
     time: [6, 25],
     drone: true,
     freqThreshold: 0.8,
+    justThreshold: 0.87,
     advanced: {
         showOptions: true,
         minTime: 0.9,//sets the minimum time for time attack
@@ -31,6 +33,7 @@ const advanced = {
     time: [4, 15],
     drone: false,
     freqThreshold: 0.85,
+    justThreshold: 0.92,
     advanced: {
         showOptions: false,
         minTime: 0.88,//sets the minimum time for time attack
@@ -54,6 +57,7 @@ var Settings = {
     game: "endurance",
     song:  "resources/HoliznaCC0 - Classic.mp3",
     freqThreshold: 0.8,//What cutoff frequency accuracy the Frequency skill will consider correct
+    justThreshold: 0.8,
     chords: [{notes: [0, 4, 7], quality: "major"}],
     inversion: false,
     inversionProbability: 0.6,
@@ -893,6 +897,21 @@ function justIntonation(){
 
     var inputs = new AbortController;
     var chord = randomChord(48);
+
+    document.getElementById("hearJust").className = "modes";
+    document.getElementById("hearError").className = "modesActive";
+    document.getElementsByName("justEnd").forEach((element)=> {element.hidden = true;})
+    document.getElementById("justSubmit").hidden = false;
+    for (j = 0; document.getElementsByClassName("pitchCorrect")[j] != undefined; j++){
+        if (j % 2 == 0){
+            document.getElementsByClassName("pitchCorrect")[j].value = "0";
+        }
+        else{
+            document.getElementsByClassName("pitchCorrect")[j].value = "0.3";
+        }
+        document.getElementsByClassName("pitchCorrect")[j].style = "visibility: hidden";
+    }
+
     chord.notes.forEach((element, index) =>{
         chord.notes[index] = chord.notes[index] + Settings.tuningError * 2 * Math.random() - Settings.tuningError / 2;
         document.getElementById("pitch" + String(index)).style = "visibility: visible";
@@ -959,6 +978,9 @@ function justIntonation(){
             })
             score = (numErrors - sumError) / numErrors * 100 + x;
             avgAccuracy = (avgAccuracy * num + (numErrors - sumError) / numErrors * 100) / (num + 1)
+            if (((numErrors - sumError) / numErrors) < Settings.justThreshold){
+                attackEnd();
+            }
             num = num + 1;
             document.getElementById("score").innerHTML = Math.round(score);
             document.getElementById("avgTime").innerHTML = (averageTime.toFixed(2));
@@ -1023,7 +1045,11 @@ function justIntonation(){
 
     function attackEnd(){
         clearInterval(intReturn);
-        chordOff();
+        chord.notes.forEach((element, index)=>{
+            chord.notes[index] = chord.notes[index] - thisError[index];
+        })
+        chordOn(chord);
+        setTimeout(()=>{chordOff();}, 1000);
         document.getElementById("endMenuLabel").innerHTML = "Game Over!"
         document.getElementById("menuScore").innerHTML = Math.round(score);
         document.getElementById("menuAvgTime").innerHTML = (averageTime.toFixed(2));
