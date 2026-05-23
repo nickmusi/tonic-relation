@@ -898,6 +898,30 @@ function justIntonation(){
         document.getElementById("pitch" + String(index)).style = "visibility: visible";
         document.getElementById("gain" + String(index)).style = "visibility: visible";
     })
+
+    var time;
+    var averageTime;
+    var avgAccuracy = 0;
+    var score;
+    var num;
+    time = audioContext.currentTime + 1;
+    averageTime = 0;
+    score = 0;
+    num = 0;
+    var intReturn;
+
+    var x = Settings.time[1];
+    if (Settings.game == "time attack") {
+        setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1; if (x <= 0) {attackEnd();};}, 100);}, 1000);
+    }
+    else {
+        setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1;}, 100);}, 1000);
+    }
+    
+  
+    document.getElementById("score").innerHTML = Math.round(score);
+
+    document.getElementById("qual").innerHTML = "Quality: " + chord.quality;
     chordOn(chord);
     //setTimeout(chordOff, 5000);
 
@@ -915,6 +939,7 @@ function justIntonation(){
     document.addEventListener("click", (event)=>{
         var id = event.target.id;
         if (id == "justSubmit"){
+            clearInterval(intReturn);
             thisError = check(chord);
             document.getElementsByName("justEnd").forEach((element)=> {element.hidden = false;})
             document.getElementById("justSubmit").hidden = true;
@@ -926,8 +951,23 @@ function justIntonation(){
             else {
                 document.getElementById("7thError").innerHTML = "7th: " + String(Math.round(thisError[3] * 10000)/100) + " cents off";
             }
+            var numErrors = thisError.findLastIndex(()=>true);
+            averageTime = (Settings.time[1] - x + averageTime * num) / (num + 1);
+            var sumError = 0
+            thisError.forEach((element)=> {
+                sumError = sumError + Math.abs(element);
+            })
+            score = (numErrors - sumError) / numErrors * 100 + x;
+            avgAccuracy = (avgAccuracy * num + (numErrors - sumError) / numErrors * 100) / (num + 1)
+            num = num + 1;
+            document.getElementById("score").innerHTML = Math.round(score);
+            document.getElementById("avgTime").innerHTML = (averageTime.toFixed(2));
+            document.getElementById("avgAccuracy").innerHTML = (avgAccuracy.toFixed(2));
         }
         if (id == "justNext"){
+            chordOff();
+            document.getElementById("hearJust").className = "modes";
+            document.getElementById("hearError").className = "modesActive";
             document.getElementsByName("justEnd").forEach((element)=> {element.hidden = true;})
             document.getElementById("justSubmit").hidden = false;
             for (j = 0; document.getElementsByClassName("pitchCorrect")[j] != undefined; j++){
@@ -946,7 +986,17 @@ function justIntonation(){
                 document.getElementById("gain" + String(index)).style = "visibility: visible";
                 chord.notes[index] = chord.notes[index] + Settings.tuningError * 2 * Math.random() - Settings.tuningError / 2;
             })
+            document.getElementById("qual").innerHTML = "Quality: " + chord.quality;
             chordOn(chord);
+            x = Settings.time[1];
+            if (Settings.game == "time attack") {
+                x = (Settings.time[1] - 1.8) * 1.2 ** (-0.6 * num) + 1.8;
+                setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1; if (x <= 0) {attackEnd();};}, 100);}, 100);
+            }
+            else {
+                setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1;}, 100);}, 100);
+            }
+            time = audioContext.currentTime;
         }
         if (id == "hearError"){
             if (event.target.className != "modesActive"){
@@ -971,6 +1021,18 @@ function justIntonation(){
         //show error, and allow user to switch between in-tune and their tuning
     }, {signal: inputs.signal});
 
+    function attackEnd(){
+        clearInterval(intReturn);
+        chordOff();
+        document.getElementById("endMenuLabel").innerHTML = "Game Over!"
+        document.getElementById("menuScore").innerHTML = Math.round(score);
+        document.getElementById("menuAvgTime").innerHTML = (averageTime.toFixed(2));
+        document.getElementById("menuHighScore").innerHTML = "N/a";
+        document.getElementById("menuAvgAccuracy").innerHTML = (avgAccuracy.toFixed(2));
+        document.getElementById("endMenu").hidden = false;
+        startMenu();
+        return;
+    }
 
     function check(chord){
 
@@ -1007,3 +1069,6 @@ function justIntonationError(root=60, interval=63, ratio=6/5){
     }
     return best;
 };
+
+document.getElementById("i13").click();
+document.getElementById("i31").click();
