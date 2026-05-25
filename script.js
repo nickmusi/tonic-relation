@@ -14,7 +14,7 @@ const beginner = {
         timeRate: 0.955,// 0 < timeRate < 1; sets how fast the time requirement will shrink
     }
 }
-const intermediate = {
+const intermediate = {//
     range: [4, 7],
     lives: 2,
     time: [6, 25],
