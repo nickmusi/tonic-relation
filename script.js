@@ -931,7 +931,7 @@ function justIntonation(){
 
     var x = Settings.time[1];
     if (Settings.game == "time attack") {
-        setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1; if (x <= 0) {attackEnd();};}, 100);}, 1000);
+        setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1; if (x <= 0) {document.getElementById("justSubmit").click();};}, 100);}, 1000);
     }
     else {
         setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1;}, 100);}, 1000);
@@ -1013,7 +1013,7 @@ function justIntonation(){
             x = Settings.time[1];
             if (Settings.game == "time attack") {
                 x = (Settings.time[1] - 1.8) * 1.2 ** (-0.6 * num) + 1.8;
-                setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1; if (x <= 0) {attackEnd();};}, 100);}, 100);
+                setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1; if (x <= 0) {document.getElementById("justSubmit").click();};}, 100);}, 100);
             }
             else {
                 setTimeout(() => {intReturn = setInterval(() => {document.getElementById("time").innerHTML = Math.max(x.toFixed(1), 0); x += -0.1;}, 100);}, 100);
